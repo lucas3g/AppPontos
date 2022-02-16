@@ -7,10 +7,12 @@ import 'package:bio_app_pontos/src/controllers/register/register_controller.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await runZonedGuarded(
     () async {
+      initializeDateFormatting();
       WidgetsFlutterBinding.ensureInitialized();
       GetIt getIt = GetIt.I;
       getIt.registerSingleton<AppSettings>(AppSettings());

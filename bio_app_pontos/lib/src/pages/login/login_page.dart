@@ -1,6 +1,7 @@
 import 'package:bio_app_pontos/src/pages/register/register_page.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -83,8 +84,13 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => RegisterPage(),
+                      PageTransition(
+                        child: RegisterPage(),
+                        type: PageTransitionType.rightToLeftWithFade,
+                        childCurrent: this,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                        alignment: Alignment.center,
                       ),
                       (route) => false,
                     );

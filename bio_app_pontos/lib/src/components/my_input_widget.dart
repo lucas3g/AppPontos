@@ -57,6 +57,19 @@ class _MyInputWidgetState extends State<MyInputWidget> {
                 r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$',
               ).hasMatch(value)) {
             return 'E-Mail Inválido';
+          } else if (widget.hintText == 'Celular' &&
+              value
+                      .replaceAll('(', '')
+                      .replaceAll(')', '')
+                      .replaceAll(' ', '')
+                      .replaceAll('-', '')
+                      .length <
+                  11) {
+            return 'Celular deve conter 11 caracteres';
+          } else if (widget.hintText == 'Placa' && value.length < 7) {
+            return 'Placa deve conter 7 caracteres';
+          } else if (widget.hintText == 'Nome Completo' && value.length < 5) {
+            return 'Nome deve conter pelo menos 5 caracteres';
           }
           return null;
         },

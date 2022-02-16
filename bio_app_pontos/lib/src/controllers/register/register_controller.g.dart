@@ -137,6 +137,23 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
     return _$registerUserAsyncAction.run(() => super.registerUser(user: user));
   }
 
+  final _$buscaCEPAsyncAction = AsyncAction('_RegisterControllerBase.buscaCEP');
+
+  @override
+  Future<List<String>> buscaCEP(
+      {required String cep, required BuildContext cxt}) {
+    return _$buscaCEPAsyncAction.run(() => super.buscaCEP(cep: cep, cxt: cxt));
+  }
+
+  final _$buscaMunicipiosAsyncAction =
+      AsyncAction('_RegisterControllerBase.buscaMunicipios');
+
+  @override
+  Future<List<String>> buscaMunicipios({required String uf}) {
+    return _$buscaMunicipiosAsyncAction
+        .run(() => super.buscaMunicipios(uf: uf));
+  }
+
   final _$_RegisterControllerBaseActionController =
       ActionController(name: '_RegisterControllerBase');
 

@@ -5,6 +5,7 @@ import 'package:bio_app_pontos/src/pages/register/steps/person_address_widget.da
 import 'package:bio_app_pontos/src/pages/register/steps/person_data_widget.dart';
 import 'package:bio_app_pontos/src/pages/register/steps/person_email_password.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key? key}) : super(key: key);
@@ -43,6 +44,9 @@ class _RegisterPageState extends State<RegisterPage> {
       case 1:
         title = 'Endereço';
         break;
+      case 2:
+        title = 'Dados de acesso';
+        break;
       default:
         title = 'Dados Pessoais';
     }
@@ -55,12 +59,18 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(titleAppBar()),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: PageView(
+          physics: NeverScrollableScrollPhysics(),
           controller: controllerPage,
           children: [
             PersonDataWidget(
@@ -87,8 +97,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (currentPage == 0) {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginPage(),
+                        PageTransition(
+                          child: LoginPage(),
+                          type: PageTransitionType.leftToRightWithFade,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                          alignment: Alignment.center,
                         ),
                         (route) => false,
                       );
@@ -128,8 +142,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller.user = UserModel();
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginPage(),
+                        PageTransition(
+                          child: LoginPage(),
+                          type: PageTransitionType.rightToLeftWithFade,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                          alignment: Alignment.center,
                         ),
                         (route) => false,
                       );
