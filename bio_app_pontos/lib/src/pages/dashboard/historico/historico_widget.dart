@@ -34,6 +34,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
     );
     await Future.delayed(Duration(seconds: 1));
     loading = false;
+    setState(() {});
   }
 
   @override
@@ -51,7 +52,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
         children: [
           Text(
             'Histórico de Compra',
-            style: AppTheme.textStyles.titleLogin.copyWith(
+            style: AppTheme.textStyles.title.copyWith(
               color: Colors.black,
               fontSize: 20,
             ),
@@ -69,8 +70,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                               children: [
                                 Text(
                                   'Data',
-                                  style:
-                                      AppTheme.textStyles.titleLogin.copyWith(
+                                  style: AppTheme.textStyles.title.copyWith(
                                     color: Colors.black,
                                     fontSize: 16,
                                   ),
@@ -80,7 +80,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                             ),
                             Text(
                               'R\$ 150,00',
-                              style: AppTheme.textStyles.titleLogin.copyWith(
+                              style: AppTheme.textStyles.title.copyWith(
                                 color: Colors.black,
                                 fontSize: 16,
                               ),
@@ -96,8 +96,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                               Expanded(
                                 child: Text(
                                   'Mercadoria',
-                                  style:
-                                      AppTheme.textStyles.titleLogin.copyWith(
+                                  style: AppTheme.textStyles.title.copyWith(
                                     color: Colors.black,
                                     fontSize: 14,
                                   ),
@@ -107,8 +106,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                                 child: Text(
                                   'Vlr Unitário',
                                   textAlign: TextAlign.end,
-                                  style:
-                                      AppTheme.textStyles.titleLogin.copyWith(
+                                  style: AppTheme.textStyles.title.copyWith(
                                     color: Colors.black,
                                     fontSize: 14,
                                   ),
@@ -118,8 +116,7 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                                 child: Text(
                                   'Quantidade',
                                   textAlign: TextAlign.end,
-                                  style:
-                                      AppTheme.textStyles.titleLogin.copyWith(
+                                  style: AppTheme.textStyles.title.copyWith(
                                     color: Colors.black,
                                     fontSize: 14,
                                   ),

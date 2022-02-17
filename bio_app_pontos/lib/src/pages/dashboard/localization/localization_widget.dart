@@ -70,8 +70,7 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
               initialCameraPosition: _kGooglePlex,
               zoomControlsEnabled: false,
               markers: markerPosto,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
+              mapToolbarEnabled: false,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },

@@ -49,6 +49,8 @@ dependencies:
   page_transition: ^2.0.5
   google_maps_flutter: ^2.1.1
   url_launcher: ^6.0.20
+  mccounting_text: ^1.0.0
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_test:

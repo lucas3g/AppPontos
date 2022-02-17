@@ -4,12 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_theme.dart';
 
 abstract class AppTextStyles {
-  TextStyle get title;
   TextStyle get button;
-  TextStyle get labelInput;
-  TextStyle get dropdownText;
-  TextStyle get titleCharts;
-  TextStyle get titleLogin;
+  TextStyle get title;
+  TextStyle get titleImages;
+  TextStyle get titleContainers;
+  TextStyle get titlePontos;
+  TextStyle get titleNome;
+  TextStyle get titleImageNaoEncontrada;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -19,29 +20,29 @@ class AppTextStylesDefault implements AppTextStyles {
 
   @override
   TextStyle get title => GoogleFonts.montserrat(
-      fontSize: 20, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
+      fontSize: 40, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
 
   @override
-  TextStyle get labelInput => GoogleFonts.roboto(
-      fontSize: 14,
-      color: AppTheme.colors.labelInput,
-      fontWeight: FontWeight.w700);
-
-  @override
-  TextStyle get dropdownText => GoogleFonts.roboto(
-      fontSize: 14,
-      color: AppTheme.colors.dropDownTextColor,
-      fontWeight: FontWeight.w700);
-
-  @override
-  TextStyle get titleCharts => GoogleFonts.roboto(
+  TextStyle get titleImages => GoogleFonts.montserrat(
       fontSize: 12,
-      color: AppTheme.colors.dropDownTextColor,
+      color: AppTheme.colors.titleImages,
       fontWeight: FontWeight.w700);
 
   @override
-  TextStyle get titleLogin => GoogleFonts.montserrat(
-      fontSize: 40,
-      color: AppTheme.colors.titleLogin,
+  TextStyle get titleContainers => GoogleFonts.montserrat(
+      fontSize: 20,
+      color: AppTheme.colors.titleImages,
       fontWeight: FontWeight.w700);
+
+  @override
+  TextStyle get titlePontos => GoogleFonts.montserrat(
+      fontSize: 40, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
+
+  @override
+  TextStyle get titleNome => GoogleFonts.montserrat(
+      fontSize: 14, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
+
+  @override
+  TextStyle get titleImageNaoEncontrada => GoogleFonts.montserrat(
+      fontSize: 12, color: Colors.black, fontWeight: FontWeight.w700);
 }

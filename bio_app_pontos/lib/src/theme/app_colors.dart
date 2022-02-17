@@ -1,27 +1,16 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  Color get backgroundSecondary;
   Color get backgroundPrimary;
-  Color get title;
   Color get button;
-  Color get border;
-  Color get labelInput;
-  Color get primaryColor;
-  Color get secondaryColor;
-  Color get dropDownTextColor;
-  Color get titleLogin;
-  Color get backGroundSplash;
+  Color get title;
+  Color get titleImages;
+  Color get titleContainers;
+  Color get titlePontos;
   MaterialColor get primary;
 }
 
 class AppColorDefault implements AppColors {
-  @override
-  Color get backgroundSecondary => Color(0xFF40B38C);
-
-  @override
-  Color get title => Colors.white;
-
   @override
   Color get button => Color(0xFF666666);
 
@@ -29,25 +18,16 @@ class AppColorDefault implements AppColors {
   Color get backgroundPrimary => Color(0xFFFFFFFF);
 
   @override
-  Color get border => Color(0xFFC2C2C2);
+  Color get title => Color(0xffcf1f36);
 
   @override
-  Color get labelInput => Color(0xFFFFFFFF);
+  Color get titleImages => Colors.black;
 
   @override
-  Color get primaryColor => Color(0xFF96242d);
+  Color get titleContainers => Colors.black;
 
   @override
-  Color get secondaryColor => Colors.white;
-
-  @override
-  Color get dropDownTextColor => Color(0xFF000000);
-
-  @override
-  Color get titleLogin => Color(0xffcf1f36);
-
-  @override
-  Color get backGroundSplash => Color(0xFFEB5757);
+  Color get titlePontos => Color(0xffcf1f36);
 
   Map<int, Color> color = {
     50: Color.fromRGBO(136, 14, 79, .1),
