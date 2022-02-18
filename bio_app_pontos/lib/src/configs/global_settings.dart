@@ -1,10 +1,14 @@
 import 'package:bio_app_pontos/src/configs/app_settings.dart';
+import 'package:bio_app_pontos/src/controllers/historico/historico_controller.dart';
+import 'package:bio_app_pontos/src/controllers/pontos_promocoes/pontos_promocoes_controller.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_controller.dart';
 import 'package:get_it/get_it.dart';
 
 class GlobalSettings {
-  final registerController = GetIt.I.get<RegisterController>();
   final appSetting = GetIt.I.get<AppSettings>();
+  final registerController = GetIt.I.get<RegisterController>();
+  final pontosPromocoesController = GetIt.I.get<PontosPromocoesController>();
+  final historicoController = GetIt.I.get<HistoricoController>();
 
   static recursiveFunction(
       {required Function function,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "239677740208",
+    "project_id": "bio-cashback",
+    "storage_bucket": "bio-cashback.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239677740208:android:7ff8a0213bfd64cb5c5775",
+        "android_client_info": {
+          "package_name": "com.el_sistemas.bio_app_pontos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239677740208-gn8drtu7k2mcguuuf49rmu4cgjn2uj7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_VxqTQ4p4xU5dbzwLc9HslFeDG-mqXsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239677740208-gn8drtu7k2mcguuuf49rmu4cgjn2uj7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

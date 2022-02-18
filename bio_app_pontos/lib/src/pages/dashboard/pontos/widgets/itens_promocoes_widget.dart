@@ -1,10 +1,11 @@
+import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class ItensPromocoesWidget extends StatelessWidget {
+class ItensPromocoesWidget extends StatefulWidget {
   final String path_image;
   final String nome_merc;
   final double preco;
@@ -14,6 +15,37 @@ class ItensPromocoesWidget extends StatelessWidget {
       required this.nome_merc,
       required this.preco})
       : super(key: key);
+
+  @override
+  State<ItensPromocoesWidget> createState() => _ItensPromocoesWidgetState();
+}
+
+class _ItensPromocoesWidgetState extends State<ItensPromocoesWidget> {
+  final controller = GlobalSettings().pontosPromocoesController;
+
+  dynamic retornaTamanhoWidth() {
+    if (context.screenWidth >= 392 && controller.promocoes.length > 1) {
+      return 130.0;
+    } else {
+      return null;
+    }
+  }
+
+  dynamic retornaTamanhoWidthImagemNaoEncontrada() {
+    if (context.screenWidth >= 392 && controller.promocoes.length > 1) {
+      return 95.0;
+    } else {
+      return null;
+    }
+  }
+
+  dynamic retornaTamanhoHeight() {
+    if (context.screenWidth >= 392 && controller.promocoes.length > 1) {
+      return 140.0;
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +59,10 @@ class ItensPromocoesWidget extends StatelessWidget {
       child: Column(
         children: [
           CachedNetworkImage(
-            imageUrl: path_image,
-            maxWidthDiskCache: 130,
+            imageUrl: widget.path_image,
             placeholder: (context, url) => Container(
-              width: context.screenWidth >= 392 ? 130 : null,
-              height: context.screenWidth >= 392 ? 140 : null,
+              width: retornaTamanhoWidth(),
+              height: retornaTamanhoHeight(),
               child: Center(
                 child: CircularProgressIndicator(
                   color: AppTheme.colors.primary,
@@ -45,7 +76,7 @@ class ItensPromocoesWidget extends StatelessWidget {
                 Icon(Icons.error, color: Colors.red, size: 20),
                 SizedBox(width: 15),
                 Container(
-                  width: context.screenWidth >= 392 ? 95 : null,
+                  width: retornaTamanhoWidthImagemNaoEncontrada(),
                   child: Text(
                     'Não foi possivel carregar a imagem...',
                     style: AppTheme.textStyles.titleImageNaoEncontrada,
@@ -53,20 +84,20 @@ class ItensPromocoesWidget extends StatelessWidget {
                 ),
               ],
             ),
-            width: context.screenWidth >= 392 ? 130 : null,
-            height: context.screenWidth >= 392 ? 140 : null,
+            width: retornaTamanhoWidth(),
+            height: retornaTamanhoHeight(),
           ),
           Container(
-            width: 130,
+            width: retornaTamanhoWidth(),
             child: Text(
-              nome_merc,
+              widget.nome_merc,
               style: AppTheme.textStyles.titleImages,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
           ),
           Text(
-            preco.reais(),
+            widget.preco.reais(),
             style: AppTheme.textStyles.titleImages,
           ),
         ],

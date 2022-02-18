@@ -1,4 +1,4 @@
-import 'package:bio_app_pontos/src/controllers/pontos_promocoes/pontos_promocoes_controller.dart';
+import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/pontos_promocoes/pontos_promocoes_status.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/pontos/widgets/itens_promocoes_widget.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
@@ -6,7 +6,6 @@ import 'package:bio_app_pontos/src/utils/animated_pontos.dart';
 import 'package:bio_app_pontos/src/utils/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mccounting_text/mccounting_text.dart';
 
 class PontosWidget extends StatefulWidget {
   PontosWidget({Key? key}) : super(key: key);
@@ -16,7 +15,7 @@ class PontosWidget extends StatefulWidget {
 }
 
 class _PontosWidgetState extends State<PontosWidget> {
-  final controller = PontosPromocoesController();
+  final controller = GlobalSettings().pontosPromocoesController;
 
   Future<void> inicializar() async {
     await controller.carregaDados();
@@ -60,11 +59,11 @@ class _PontosWidgetState extends State<PontosWidget> {
                         Observer(builder: (context) {
                           return controller.status ==
                                   PontosPromocoesStatus.success
-                              ? McCountingText(
+                              ? AnimatedCountText(
                                   begin: 0,
                                   end: 7520,
                                   style: AppTheme.textStyles.titlePontos,
-                                  duration: Duration(seconds: 1),
+                                  duration: Duration(milliseconds: 600),
                                   curve: Curves.decelerate,
                                 )
                               : LoadingWidget(size: Size(200, 50), radius: 10);
@@ -100,42 +99,13 @@ class _PontosWidgetState extends State<PontosWidget> {
                           children: [
                             Wrap(
                               children: [
-                                ItensPromocoesWidget(
-                                  path_image:
-                                      'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-                                  nome_merc: 'Oleo Diesel',
-                                  preco: 4.75,
-                                ),
-                                ItensPromocoesWidget(
-                                  path_image:
-                                      'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-                                  nome_merc: 'Wafer Minueto - Limão',
-                                  preco: 2.50,
-                                ),
-                                ItensPromocoesWidget(
-                                  path_image:
-                                      'https://cdn-cosmos.bluesoft.com.br/products/7894900011715',
-                                  nome_merc: 'Coca-Cola',
-                                  preco: 4.75,
-                                ),
-                                ItensPromocoesWidget(
-                                  path_image:
-                                      'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-                                  nome_merc: 'Wafer Minueto - Limão',
-                                  preco: 2.50,
-                                ),
-                                ItensPromocoesWidget(
-                                  path_image:
-                                      'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-                                  nome_merc: 'Wafer Minueto - Limão',
-                                  preco: 2.50,
-                                ),
-                                ItensPromocoesWidget(
-                                  path_image:
-                                      'https://cdn-cosmos.bluesoft.com.br/products/7894900011715',
-                                  nome_merc: 'Coca-Cola',
-                                  preco: 4.75,
-                                ),
+                                ...controller.promocoes.map(
+                                  (e) => ItensPromocoesWidget(
+                                    path_image: e.path_image,
+                                    nome_merc: e.descricao,
+                                    preco: e.preco,
+                                  ),
+                                )
                               ],
                             ),
                           ],

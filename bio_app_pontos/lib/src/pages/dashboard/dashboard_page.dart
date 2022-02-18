@@ -4,11 +4,9 @@ import 'package:bio_app_pontos/src/pages/dashboard/historico/historico_widget.da
 import 'package:bio_app_pontos/src/pages/dashboard/localization/localization_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/pontos/pontos_widget.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
-import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -48,64 +46,68 @@ class _DashBoardPageState extends State<DashBoardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.colors.backgroundPrimary,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 25),
-        child: Column(
-          children: [
-            Container(
-              height: context.screenHeight * 0.12,
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                      ),
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    child: Image.asset(
+                      'assets/images/logo.png',
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Bem-Vindo',
-                        style: AppTheme.textStyles.titleNome,
-                      ),
-                      Text(
-                        'Lucas Emanuel Silva',
-                        style: AppTheme.textStyles.titleNome,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                      ),
-                      Text(
-                        '${dataHoje.DiaMesAno()}',
-                        style: AppTheme.textStyles.titleNome,
-                      ),
-                    ],
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Bem-Vindo',
+                          style: AppTheme.textStyles.titleNome,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Lucas Emanuel Silva dos Santos Paulo',
+                          style: AppTheme.textStyles.titleNome,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          '${dataHoje.DiaMesAno()}',
+                          style: AppTheme.textStyles.titleNome,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Expanded(
-              child: PageView(
-                physics:
-                    currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
-                controller: controllerPage,
-                onPageChanged: (index) {
-                  pageChanged(index);
-                },
-                children: [
-                  PontosWidget(),
-                  HistorioWidget(),
-                  LocalizationWidget(),
-                ],
-              ),
+          ),
+          Expanded(
+            child: PageView(
+              physics:
+                  currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
+              controller: controllerPage,
+              onPageChanged: (index) {
+                pageChanged(index);
+              },
+              children: [
+                PontosWidget(),
+                HistorioWidget(),
+                LocalizationWidget(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         index: currentIndex,
