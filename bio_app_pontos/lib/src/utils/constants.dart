@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-class Constants {}
+class Constants {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+}
 
 extension ContextExtensions on BuildContext {
   double get screenHeight => MediaQuery.of(this).size.height;

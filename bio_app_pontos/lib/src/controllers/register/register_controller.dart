@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
+import 'package:bio_app_pontos/src/utils/meu_toast.dart';
+import 'package:bio_app_pontos/src/utils/types_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
@@ -174,13 +176,11 @@ abstract class _RegisterControllerBase with Store {
       return lista;
     } catch (e) {
       status = RegisterStatus.error;
-      CherryToast.error(
-        title: 'Ops...',
-        description: 'CEP não encontrado.',
-        animationType: ANIMATION_TYPE.fromRight,
-        animationDuration: Duration(milliseconds: 1000),
-        autoDismiss: true,
-      ).show(cxt);
+      MeuToast.toast(
+          title: 'Ops..',
+          message: 'CEP não encontrado.',
+          type: TypeToast.error,
+          context: cxt);
       rethrow;
     }
   }

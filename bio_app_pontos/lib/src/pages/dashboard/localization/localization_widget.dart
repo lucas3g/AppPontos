@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:bio_app_pontos/src/configs/global_settings.dart';
+import 'package:bio_app_pontos/src/controllers/maps/maps_status.dart';
 import 'package:bio_app_pontos/src/utils/loading_widget.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +19,7 @@ class LocalizationWidget extends StatefulWidget {
 
 class _LocalizationWidgetState extends State<LocalizationWidget> {
   Completer<GoogleMapController> _controller = Completer();
+  final mapsController = GlobalSettings().mapsController;
 
   late bool carregandoMapa = true;
 
@@ -35,10 +39,7 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
       ),
     );
     markerPosto.add(mk);
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {
-      carregandoMapa = !carregandoMapa;
-    });
+    await mapsController.abreMapa();
   }
 
   static void navigateTo(double lat, double lng) async {
@@ -64,19 +65,21 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: !carregandoMapa
-          ? GoogleMap(
-              mapType: MapType.hybrid,
-              initialCameraPosition: _kGooglePlex,
-              zoomControlsEnabled: false,
-              markers: markerPosto,
-              mapToolbarEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            )
-          : LoadingWidget(
-              size: Size(double.maxFinite, double.maxFinite), radius: 10),
+      body: Observer(builder: (context) {
+        return mapsController.status == MapsStatus.success
+            ? GoogleMap(
+                mapType: MapType.hybrid,
+                initialCameraPosition: _kGooglePlex,
+                zoomControlsEnabled: false,
+                markers: markerPosto,
+                mapToolbarEnabled: false,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              )
+            : LoadingWidget(
+                size: Size(double.maxFinite, double.maxFinite), radius: 10);
+      }),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 30),
         child: Row(

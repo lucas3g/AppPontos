@@ -1,5 +1,6 @@
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
+import 'package:bio_app_pontos/src/pages/dashboard/config/config_page.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/historico/historico_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/localization/localization_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/pontos/pontos_widget.dart';
@@ -16,29 +17,22 @@ class DashBoardPage extends StatefulWidget {
 }
 
 class _DashBoardPageState extends State<DashBoardPage> {
-  final PageController controllerPage = PageController();
+  late PageController controllerPage;
   late int currentIndex = 0;
   late UserModel? user;
   final DateTime dataHoje = DateTime.now();
+  late bool tapped = false;
 
   @override
   void initState() {
     super.initState();
-
+    controllerPage = PageController(initialPage: currentIndex);
     user = GlobalSettings().appSetting.user;
   }
 
-  void pageChanged(int index) {
+  void onPageChanged(index) {
     setState(() {
       currentIndex = index;
-    });
-  }
-
-  void bottomTapped(int index) {
-    setState(() {
-      currentIndex = index;
-      controllerPage.animateToPage(index,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
     });
   }
 
@@ -97,13 +91,12 @@ class _DashBoardPageState extends State<DashBoardPage> {
               physics:
                   currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
               controller: controllerPage,
-              onPageChanged: (index) {
-                pageChanged(index);
-              },
+              onPageChanged: onPageChanged,
               children: [
                 PontosWidget(),
                 HistorioWidget(),
                 LocalizationWidget(),
+                ConfigPage(),
               ],
             ),
           ),
@@ -131,9 +124,15 @@ class _DashBoardPageState extends State<DashBoardPage> {
             size: 30,
             color: Colors.white,
           ),
+          Icon(
+            Icons.settings_rounded,
+            size: 30,
+            color: Colors.white,
+          ),
         ],
         onTap: (index) {
-          bottomTapped(index);
+          controllerPage.animateToPage(index,
+              duration: Duration(milliseconds: 20), curve: Curves.easeInOut);
         },
       ),
     );

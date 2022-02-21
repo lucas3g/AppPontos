@@ -24,6 +24,21 @@ mixin _$HistoricoController on _HistoricoControllerBase, Store {
     });
   }
 
+  final _$itens_vendaAtom = Atom(name: '_HistoricoControllerBase.itens_venda');
+
+  @override
+  ObservableList<Itens> get itens_venda {
+    _$itens_vendaAtom.reportRead();
+    return super.itens_venda;
+  }
+
+  @override
+  set itens_venda(ObservableList<Itens> value) {
+    _$itens_vendaAtom.reportWrite(value, super.itens_venda, () {
+      super.itens_venda = value;
+    });
+  }
+
   final _$carregaHistoricoAsyncAction =
       AsyncAction('_HistoricoControllerBase.carregaHistorico');
 
@@ -35,7 +50,8 @@ mixin _$HistoricoController on _HistoricoControllerBase, Store {
   @override
   String toString() {
     return '''
-status: ${status}
+status: ${status},
+itens_venda: ${itens_venda}
     ''';
   }
 }

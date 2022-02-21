@@ -49,6 +49,22 @@ abstract class _PontosPromocoesControllerBase with Store {
         preco: 3.75,
       ),
     );
+    promocoes.add(
+      PromocoesModel(
+        descricao: 'Wafer Limão - Minueto',
+        path_image: 'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
+        quantidade: 3,
+        preco: 2.75,
+      ),
+    );
+    promocoes.add(
+      PromocoesModel(
+        descricao: 'Coca-Cola',
+        path_image: 'https://cdn-cosmos.bluesoft.com.br/products/7894900011715',
+        quantidade: 3,
+        preco: 3.75,
+      ),
+    );
     status = PontosPromocoesStatus.success;
   }
 }
