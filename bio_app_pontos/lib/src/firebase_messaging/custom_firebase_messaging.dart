@@ -16,6 +16,8 @@ class CustomFirebaseMessaging {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(badge: true, sound: true);
 
+    await FirebaseMessaging.instance.subscribeToTopic("all");
+
     FirebaseMessaging.onMessage.listen((message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;

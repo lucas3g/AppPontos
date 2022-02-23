@@ -12,7 +12,7 @@ abstract class AppColors {
 
 class AppColorDefault implements AppColors {
   @override
-  Color get button => Color(0xFF666666);
+  Color get button => Colors.white;
 
   @override
   Color get backgroundPrimary => Color(0xFFFFFFFF);

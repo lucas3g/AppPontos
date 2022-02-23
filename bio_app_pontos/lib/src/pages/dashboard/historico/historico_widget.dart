@@ -114,21 +114,17 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: Text(
-                                        controller.itens_venda[index].merc),
+                                    child: Text(e.merc),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      controller.itens_venda[index].vlrUni
-                                          .reais(),
+                                      e.vlrUni.reais(),
                                       textAlign: TextAlign.end,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      controller.itens_venda[index].qtd
-                                              .toString() +
-                                          ' L',
+                                      e.qtd.Litros(),
                                       textAlign: TextAlign.end,
                                     ),
                                   ),

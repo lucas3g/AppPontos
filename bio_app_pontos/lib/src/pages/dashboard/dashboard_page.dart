@@ -31,9 +31,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
   }
 
   void onPageChanged(index) {
-    setState(() {
-      currentIndex = index;
-    });
+    if (!tapped)
+      setState(() {
+        currentIndex = index;
+      });
   }
 
   @override
@@ -88,10 +89,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
           ),
           Expanded(
             child: PageView(
+              onPageChanged: onPageChanged,
               physics:
                   currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
               controller: controllerPage,
-              onPageChanged: onPageChanged,
               children: [
                 PontosWidget(),
                 HistorioWidget(),
@@ -111,28 +112,29 @@ class _DashBoardPageState extends State<DashBoardPage> {
         items: [
           Icon(
             Icons.home_rounded,
-            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.list,
-            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.location_on,
-            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.settings_rounded,
-            size: 30,
             color: Colors.white,
           ),
         ],
-        onTap: (index) {
-          controllerPage.animateToPage(index,
-              duration: Duration(milliseconds: 20), curve: Curves.easeInOut);
+        onTap: (index) async {
+          tapped = true;
+          setState(() {});
+          currentIndex = index;
+          await controllerPage.animateToPage(index,
+              duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+          tapped = false;
+          setState(() {});
         },
       ),
     );

@@ -11,12 +11,13 @@ abstract class AppTextStyles {
   TextStyle get titlePontos;
   TextStyle get titleNome;
   TextStyle get titleImageNaoEncontrada;
+  TextStyle get textoSairApp;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get button => GoogleFonts.roboto(
-      fontSize: 16, fontWeight: FontWeight.w400, color: AppTheme.colors.button);
+      fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.colors.button);
 
   @override
   TextStyle get title => GoogleFonts.montserrat(
@@ -45,4 +46,8 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get titleImageNaoEncontrada => GoogleFonts.montserrat(
       fontSize: 12, color: Colors.black, fontWeight: FontWeight.w700);
+
+  @override
+  TextStyle get textoSairApp => GoogleFonts.montserrat(
+      fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500);
 }

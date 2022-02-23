@@ -4,7 +4,6 @@ import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/maps/maps_status.dart';
 import 'package:bio_app_pontos/src/utils/loading_widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -18,48 +17,13 @@ class LocalizationWidget extends StatefulWidget {
 }
 
 class _LocalizationWidgetState extends State<LocalizationWidget> {
-  Completer<GoogleMapController> _controller = Completer();
   final mapsController = GlobalSettings().mapsController;
-
-  late bool carregandoMapa = true;
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(-27.9512195, -52.9238309),
-    zoom: 18,
-  );
-
-  Set<Marker> markerPosto = {};
-
-  Future<void> inicializarMarker() async {
-    Marker mk = Marker(
-      markerId: MarkerId('biowahl'),
-      position: LatLng(-27.9512195, -52.9238309),
-      infoWindow: InfoWindow(
-        title: 'Bio Abastecedora Wahl',
-      ),
-    );
-    markerPosto.add(mk);
-    await mapsController.abreMapa();
-  }
-
-  static void navigateTo(double lat, double lng) async {
-    var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
-    } else {
-      throw 'Não pode ser aberto ${uri.toString()}';
-    }
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
-  }
+  final Completer<GoogleMapController> controllerGoogle = Completer();
 
   @override
   void initState() {
     super.initState();
-    inicializarMarker();
+    mapsController.inicializarMarker();
   }
 
   @override
@@ -69,12 +33,12 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
         return mapsController.status == MapsStatus.success
             ? GoogleMap(
                 mapType: MapType.hybrid,
-                initialCameraPosition: _kGooglePlex,
+                initialCameraPosition: mapsController.kGooglePlex,
                 zoomControlsEnabled: false,
-                markers: markerPosto,
+                markers: mapsController.markerPosto,
                 mapToolbarEnabled: false,
                 onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
+                  controllerGoogle.complete(controller);
                 },
               )
             : LoadingWidget(
@@ -87,14 +51,16 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
           children: [
             FloatingActionButton.extended(
               onPressed: () {
-                navigateTo(-27.9512195, -52.9238309);
+                mapsController.navigateTo(-27.9512195, -52.9238309);
               },
               label: Text('Para o posto!'),
               icon: Icon(Icons.local_gas_station_rounded),
               backgroundColor: AppTheme.colors.primary,
             ),
             FloatingActionButton(
-              onPressed: _goToTheLake,
+              onPressed: () {
+                mapsController.goToTheLake(completer: controllerGoogle);
+              },
               backgroundColor: AppTheme.colors.primary,
               child: Icon(Icons.my_location_rounded),
             ),

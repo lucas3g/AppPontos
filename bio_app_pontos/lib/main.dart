@@ -23,7 +23,6 @@ Future<void> main() async {
       await Firebase.initializeApp();
 
       await CustomFirebaseMessaging().inicialize();
-      await CustomFirebaseMessaging().getTokenFirebase();
 
       GetIt getIt = GetIt.I;
       getIt.registerSingleton<AppSettings>(AppSettings());

@@ -17,12 +17,14 @@ abstract class _HistoricoControllerBase with Store {
     status = HistoricoStatus.loading;
     itens_venda.clear();
     await Future.delayed(Duration(milliseconds: 600));
-    itens_venda.addAll(
-      List.generate(
-        10,
-        (index) => Itens(
-            merc: 'Gasolina Comum aaaaaaaaaaaaaaaaaa', vlrUni: 8, qtd: 10000),
-      ),
+    itens_venda.add(
+      Itens(merc: 'Gasolina Comum', vlrUni: 7.5, qtd: 115.15),
+    );
+    itens_venda.add(
+      Itens(merc: 'Gasolina Aditivada', vlrUni: 8, qtd: 200.15),
+    );
+    itens_venda.add(
+      Itens(merc: 'Coca-Colca', vlrUni: 4.50, qtd: 1),
     );
     status = HistoricoStatus.success;
   }
