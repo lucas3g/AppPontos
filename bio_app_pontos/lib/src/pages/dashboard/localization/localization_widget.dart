@@ -20,10 +20,14 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
   final mapsController = GlobalSettings().mapsController;
   final Completer<GoogleMapController> controllerGoogle = Completer();
 
+  Future<void> carregaMapa() async {
+    await mapsController.abreMapa();
+  }
+
   @override
   void initState() {
     super.initState();
-    mapsController.inicializarMarker();
+    carregaMapa();
   }
 
   @override

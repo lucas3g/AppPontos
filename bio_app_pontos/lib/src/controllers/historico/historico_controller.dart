@@ -24,7 +24,7 @@ abstract class _HistoricoControllerBase with Store {
       Itens(merc: 'Gasolina Aditivada', vlrUni: 8, qtd: 200.15),
     );
     itens_venda.add(
-      Itens(merc: 'Coca-Colca', vlrUni: 4.50, qtd: 1),
+      Itens(merc: 'Coca-Cola', vlrUni: 4.50, qtd: 1),
     );
     status = HistoricoStatus.success;
   }

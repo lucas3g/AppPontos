@@ -1,8 +1,16 @@
 import 'package:bio_app_pontos/src/components/my_input_widget.dart';
+import 'package:bio_app_pontos/src/configs/global_settings.dart';
+import 'package:bio_app_pontos/src/controllers/login/login_status.dart';
 import 'package:bio_app_pontos/src/pages/register/register_page.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
+import 'package:bio_app_pontos/src/utils/meu_toast.dart';
+import 'package:bio_app_pontos/src/utils/types_toast.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:page_transition/page_transition.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,25 +21,63 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
+  final cpfController = TextEditingController();
   final senhaController = TextEditingController();
+  final controller = GlobalSettings().loginController;
   late bool visiblePassword = false;
-  FocusNode email = FocusNode();
+  FocusNode cpf = FocusNode();
   FocusNode password = FocusNode();
   GlobalKey<FormState> keySenha = GlobalKey<FormState>();
-  GlobalKey<FormState> keyEmail = GlobalKey<FormState>();
+  GlobalKey<FormState> keyCPF = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    autorun((_) async {
+      if (controller.status == LoginStatus.success) {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else if (controller.status == LoginStatus.error) {
+        MeuToast.toast(
+            title: 'Ops... :(',
+            message: 'Não Foi Possivel Fazer Login.Verifique seus Dados.',
+            type: TypeToast.error,
+            context: context);
+      } else if (controller.status == LoginStatus.semInternet) {
+        MeuToast.toast(
+            title: 'Ops... :(',
+            message: 'Parece que você está sem Internet',
+            type: TypeToast.noNet,
+            context: context);
+      } else if (controller.status == LoginStatus.invalidCPF) {
+        MeuToast.toast(
+            title: 'Ops... :(',
+            message: 'Você digitou um CPF inválido.',
+            type: TypeToast.dadosInv,
+            context: context);
+      } else if (controller.status == LoginStatus.naoAutorizado) {
+        MeuToast.toast(
+            title: 'Ops... :(',
+            message:
+                'Seu usuário não tem permissão para acessar o aplicativo.\nVerifique seu usuário e/ou senha.',
+            type: TypeToast.dadosInv,
+            context: context);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        toolbarHeight: context.screenHeight * 0.2,
+        toolbarHeight: context.screenHeight * 0.20,
         elevation: 0,
         backgroundColor: Colors.white,
         flexibleSpace: Container(
           padding: EdgeInsets.all(30),
-          child: Image.asset(context.image_path),
+          child: Image.asset(
+            context.image_path,
+          ),
         ),
       ),
       body: Padding(
@@ -44,18 +90,26 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 MyInputWidget(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  formKey: keyEmail,
-                  textEditingController: emailController,
-                  focusNode: email,
-                  hintText: 'E-Mail',
-                  campoVazio: 'Digite seu E-Mail',
+                  keyboardType: TextInputType.number,
+                  formKey: keyCPF,
+                  textEditingController: cpfController,
+                  focusNode: cpf,
+                  hintText: 'CPF',
+                  campoVazio: 'Digite seu CPF',
                   onFieldSubmitted: (value) {
                     password.requestFocus();
                   },
-                  onChanged: (String? email) {},
+                  onChanged: (String? cpf) {
+                    controller.cpf = cpf!;
+                  },
+                  inputFormaters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CpfInputFormatter(),
+                  ],
                 ),
                 SizedBox(height: 10),
                 MyInputWidget(
+                  textCapitalization: TextCapitalization.none,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   formKey: keySenha,
                   textEditingController: senhaController,
@@ -76,32 +130,52 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {});
                     },
                   ),
-                  onFieldSubmitted: (value) {
+                  onFieldSubmitted: (value) async {
+                    if (!keyCPF.currentState!.validate() ||
+                        !keySenha.currentState!.validate()) {
+                      return;
+                    }
                     FocusScope.of(context).requestFocus(FocusNode());
+                    await controller.acessarApp();
                   },
-                  onChanged: (String? senha) {},
+                  onChanged: (String? password) {
+                    controller.password = password!;
+                  },
                 ),
                 SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (!keyEmail.currentState!.validate() ||
+                        onPressed: () async {
+                          if (!keyCPF.currentState!.validate() ||
                               !keySenha.currentState!.validate()) {
                             return;
                           }
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/dashboard',
-                            (route) => false,
-                          );
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          await controller.acessarApp();
                         },
-                        child: Text(
-                          'Entrar',
-                          style:
-                              AppTheme.textStyles.button.copyWith(fontSize: 16),
-                        ),
+                        child: Observer(builder: (context) {
+                          return controller.status == LoginStatus.empty ||
+                                  controller.status == LoginStatus.error ||
+                                  controller.status == LoginStatus.success ||
+                                  controller.status == LoginStatus.invalidCPF ||
+                                  controller.status == LoginStatus.semInternet
+                              ? Text(
+                                  'Entrar',
+                                  style: AppTheme.textStyles.button
+                                      .copyWith(fontSize: 16),
+                                )
+                              : Center(
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                        }),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -109,6 +183,18 @@ class _LoginPageState extends State<LoginPage> {
                           fixedSize: Size(0, 45),
                         ),
                       ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Esqueceu sua senha?',
+                    ),
+                    TextButton(
+                      child: Text('Clique aqui'),
+                      onPressed: () {},
                     ),
                   ],
                 ),

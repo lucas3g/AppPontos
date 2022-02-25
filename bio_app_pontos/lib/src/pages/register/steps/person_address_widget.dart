@@ -106,6 +106,18 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
   }
 
   @override
+  void dispose() {
+    controllerCep.dispose();
+    controllerEstado.dispose();
+    controllerMunicipio.dispose();
+    controllerRua.dispose();
+    controllerNumero.dispose();
+    controllerBairro.dispose();
+    controllerComplemento.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 60),
@@ -141,6 +153,10 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                           filtraEstados(lista[0]);
                           filtraMunicipios(lista[1]);
                         });
+                        municipios = await controller.buscaMunicipios(
+                          uf: lista[0],
+                        );
+                        filteredMunicipios = municipios;
                         estado.requestFocus();
                       },
                       onChanged: (String? cep) {
@@ -170,7 +186,9 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                         },
                         child: controller.status == RegisterStatus.success ||
                                 controller.status == RegisterStatus.empty ||
-                                controller.status == RegisterStatus.error
+                                controller.status == RegisterStatus.error ||
+                                controller.status ==
+                                    RegisterStatus.cnpjJaCadastrado
                             ? Text('Buscar CEP')
                             : Container(
                                 height: 30,
@@ -376,7 +394,6 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               MyInputWidget(
                 formKey: keyRua,
                 textEditingController: controllerRua,
-                inputFormaters: [UpperCaseTextFormatter()],
                 focusNode: rua,
                 hintText: 'Rua',
                 campoVazio: 'Digite sua Rua',
@@ -406,7 +423,6 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               MyInputWidget(
                 formKey: keyBairro,
                 textEditingController: controllerBairro,
-                inputFormaters: [UpperCaseTextFormatter()],
                 focusNode: bairro,
                 hintText: 'Bairro',
                 campoVazio: 'Digite seu bairro',
@@ -421,7 +437,6 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               MyInputWidget(
                 formKey: keyComplemento,
                 textEditingController: controllerComplemento,
-                inputFormaters: [UpperCaseTextFormatter()],
                 focusNode: complemento,
                 hintText: 'Complemento',
                 campoVazio: 'Digite seu Complemento',

@@ -1,10 +1,15 @@
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
+import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/pages/login/login_page.dart';
 import 'package:bio_app_pontos/src/pages/register/steps/person_address_widget.dart';
 import 'package:bio_app_pontos/src/pages/register/steps/person_data_widget.dart';
 import 'package:bio_app_pontos/src/pages/register/steps/person_email_password.dart';
+import 'package:bio_app_pontos/src/utils/meu_toast.dart';
+import 'package:bio_app_pontos/src/utils/types_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:page_transition/page_transition.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -54,6 +59,27 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    autorun((_) async {
+      if (controller.status == RegisterStatus.cnpjJaCadastrado) {
+        MeuToast.toast(
+          title: 'Ops... :(',
+          message: 'CPF já cadastrado.',
+          type: TypeToast.dadosInv,
+          context: context,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controllerPage.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -67,22 +93,43 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: controllerPage,
-          children: [
-            PersonDataWidget(
-              controller: controller,
-            ),
-            PersonAddressWidget(
-              controller: controller,
-            ),
-            PersonEmailPasswordWidget(
-              controller: controller,
-            ),
-          ],
+      body: WillPopScope(
+        onWillPop: () async {
+          if (currentPage == 0) {
+            controller.user = UserModel();
+            Navigator.pushAndRemoveUntil(
+              context,
+              PageTransition(
+                child: LoginPage(),
+                type: PageTransitionType.leftToRightWithFade,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                alignment: Alignment.center,
+              ),
+              (route) => false,
+            );
+          } else {
+            await backPage();
+          }
+          return true;
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: controllerPage,
+            children: [
+              PersonDataWidget(
+                controller: controller,
+              ),
+              PersonAddressWidget(
+                controller: controller,
+              ),
+              PersonEmailPasswordWidget(
+                controller: controller,
+              ),
+            ],
+          ),
         ),
       ),
       bottomSheet: Container(
@@ -95,6 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: TextButton(
                   onPressed: () async {
                     if (currentPage == 0) {
+                      controller.user = UserModel();
                       Navigator.pushAndRemoveUntil(
                         context,
                         PageTransition(
@@ -138,23 +186,38 @@ class _RegisterPageState extends State<RegisterPage> {
                           return;
                         }
                       }
-                      await controller.registerUser(user: controller.user);
-                      controller.user = UserModel();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        PageTransition(
-                          child: LoginPage(),
-                          type: PageTransitionType.rightToLeftWithFade,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                          alignment: Alignment.center,
-                        ),
-                        (route) => false,
-                      );
+                      if (await controller.registerUser()) {
+                        controller.user = UserModel();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          PageTransition(
+                            child: LoginPage(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            alignment: Alignment.center,
+                          ),
+                          (route) => false,
+                        );
+                      }
                     }
                   },
-                  child: Text(
-                      currentPage < 2 ? 'Continuar' : 'Finalizar Cadastro'),
+                  child: Observer(builder: (context) {
+                    return controller.status == RegisterStatus.empty ||
+                            controller.status == RegisterStatus.error ||
+                            controller.status == RegisterStatus.success ||
+                            controller.status == RegisterStatus.cnpjJaCadastrado
+                        ? Text(currentPage < 2
+                            ? 'Continuar'
+                            : 'Finalizar Cadastro')
+                        : Center(
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                  }),
                 ),
               ),
             ),

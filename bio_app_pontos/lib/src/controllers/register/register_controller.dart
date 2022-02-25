@@ -1,15 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
+import 'package:bio_app_pontos/src/services/dio.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
 import 'package:bio_app_pontos/src/utils/types_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
-import 'package:cherry_toast/cherry_toast.dart';
-import 'package:cherry_toast/resources/arrays.dart';
 part 'register_controller.g.dart';
 
 class RegisterController = _RegisterControllerBase with _$RegisterController;
@@ -68,8 +68,35 @@ abstract class _RegisterControllerBase with Store {
   }
 
   @action
-  Future<void> registerUser({required UserModel user}) async {
-    await GlobalSettings().appSetting.setUser(user: user);
+  Future<bool> registerUser() async {
+    try {
+      status = RegisterStatus.loading;
+      await Future.delayed(Duration(milliseconds: 600));
+      final result = await InternetAddress.lookup(MeuDio.baseUrl);
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (await verificaCPFCadastrado()) {
+          status = RegisterStatus.cnpjJaCadastrado;
+          return false;
+        }
+        final response = await MeuDio.dio().post(
+            '/setJson/01459027/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+            data: user.toJson());
+
+        if (response.statusCode == 200) {
+          await GlobalSettings().appSetting.setUser(user: user);
+          status = RegisterStatus.success;
+          return true;
+        } else {
+          status = RegisterStatus.error;
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      status = RegisterStatus.error;
+      return false;
+    }
   }
 
   @action
@@ -286,5 +313,27 @@ abstract class _RegisterControllerBase with Store {
     municipios.sort((a, b) => a.compareTo(b));
 
     return municipios;
+  }
+
+  @action
+  Future<bool> verificaCPFCadastrado() async {
+    try {
+      status = RegisterStatus.loading;
+
+      final response = await MeuDio.dio().post(
+        '/getJson/01459027/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+      );
+
+      if (jsonDecode(response.data)['cpf'] == user.cpf) {
+        status = RegisterStatus.success;
+        return true;
+      } else {
+        status = RegisterStatus.success;
+        return false;
+      }
+    } catch (e) {
+      status = RegisterStatus.error;
+      return false;
+    }
   }
 }

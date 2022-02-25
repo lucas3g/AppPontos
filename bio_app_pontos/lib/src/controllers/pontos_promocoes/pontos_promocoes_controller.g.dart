@@ -25,6 +25,21 @@ mixin _$PontosPromocoesController on _PontosPromocoesControllerBase, Store {
     });
   }
 
+  final _$saldoAtom = Atom(name: '_PontosPromocoesControllerBase.saldo');
+
+  @override
+  SaldoModel get saldo {
+    _$saldoAtom.reportRead();
+    return super.saldo;
+  }
+
+  @override
+  set saldo(SaldoModel value) {
+    _$saldoAtom.reportWrite(value, super.saldo, () {
+      super.saldo = value;
+    });
+  }
+
   final _$statusAtom = Atom(name: '_PontosPromocoesControllerBase.status');
 
   @override
@@ -52,6 +67,7 @@ mixin _$PontosPromocoesController on _PontosPromocoesControllerBase, Store {
   String toString() {
     return '''
 promocoes: ${promocoes},
+saldo: ${saldo},
 status: ${status}
     ''';
   }

@@ -61,10 +61,11 @@ class _PontosWidgetState extends State<PontosWidget> {
                                   PontosPromocoesStatus.success
                               ? AnimatedCountText(
                                   begin: 0,
-                                  end: 7520,
+                                  end: controller.saldo.saldo!,
                                   style: AppTheme.textStyles.titlePontos,
                                   duration: Duration(milliseconds: 600),
                                   curve: Curves.decelerate,
+                                  precision: 2,
                                 )
                               : LoadingWidget(size: Size(200, 50), radius: 10);
                         }),
@@ -97,17 +98,29 @@ class _PontosWidgetState extends State<PontosWidget> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Wrap(
-                              children: [
-                                ...controller.promocoes.map(
-                                  (e) => ItensPromocoesWidget(
-                                    path_image: e.path_image,
-                                    nome_merc: e.descricao,
-                                    preco: e.preco,
-                                  ),
-                                )
-                              ],
-                            ),
+                            Observer(builder: (context) {
+                              return controller.status ==
+                                      PontosPromocoesStatus.success
+                                  ? Wrap(
+                                      children: [
+                                        ...controller.promocoes.map(
+                                          (e) => ItensPromocoesWidget(
+                                            path_image: e.path_image,
+                                            nome_merc: e.descricao,
+                                            preco: e.preco,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                          child: LoadingWidget(
+                                              size: Size(0, 450), radius: 10),
+                                        ),
+                                      ],
+                                    );
+                            }),
                           ],
                         ),
                       ),

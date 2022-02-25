@@ -17,6 +17,7 @@ class MyInputWidget extends StatefulWidget {
   final String? campoVazio;
   final GlobalKey<FormState> formKey;
   final AutovalidateMode? autovalidateMode;
+  final TextCapitalization textCapitalization;
   const MyInputWidget(
       {Key? key,
       required this.focusNode,
@@ -31,7 +32,8 @@ class MyInputWidget extends StatefulWidget {
       required this.formKey,
       required this.textEditingController,
       required this.onChanged,
-      this.autovalidateMode})
+      this.autovalidateMode,
+      this.textCapitalization = TextCapitalization.sentences})
       : super(key: key);
 
   @override
@@ -47,6 +49,7 @@ class _MyInputWidgetState extends State<MyInputWidget> {
           ? widget.autovalidateMode
           : AutovalidateMode.disabled,
       child: TextFormField(
+        textCapitalization: widget.textCapitalization,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return widget.campoVazio;

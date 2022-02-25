@@ -1,7 +1,16 @@
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-class MeuHttp {
-  MeuHttp._();
+class MeuDio {
+  static String get baseUrl => 'google.com';
 
-  static http.Client get api => api;
+  static Dio dio() {
+    BaseOptions options = BaseOptions(
+      baseUrl: 'http://192.168.254.10/firebird/AppCashBack',
+      connectTimeout: 2000,
+    );
+
+    final Dio dio = Dio(options);
+
+    return dio;
+  }
 }

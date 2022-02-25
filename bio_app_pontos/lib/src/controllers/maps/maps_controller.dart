@@ -24,12 +24,6 @@ abstract class _MapsControllerBase with Store {
   @action
   Future<void> abreMapa() async {
     status = MapsStatus.loading;
-    await Future.delayed(Duration(milliseconds: 600));
-    status = MapsStatus.success;
-  }
-
-  @action
-  Future<void> inicializarMarker() async {
     Marker mk = Marker(
       markerId: MarkerId('biowahl'),
       position: LatLng(-27.9512195, -52.9238309),
@@ -38,7 +32,8 @@ abstract class _MapsControllerBase with Store {
       ),
     );
     markerPosto.add(mk);
-    await abreMapa();
+    await Future.delayed(Duration(milliseconds: 600));
+    status = MapsStatus.success;
   }
 
   @action

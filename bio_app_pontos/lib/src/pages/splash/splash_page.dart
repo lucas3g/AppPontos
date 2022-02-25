@@ -1,3 +1,4 @@
+import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/pages/login/login_page.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -12,18 +13,14 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   Future<void> inicializar() async {
-    await Future.delayed(Duration(seconds: 1));
-    Navigator.pushAndRemoveUntil(
-      context,
-      PageTransition(
-        child: LoginPage(),
-        type: PageTransitionType.fade,
-        duration: Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-        alignment: Alignment.center,
-      ),
-      (route) => false,
-    );
+    await Future.delayed(Duration(milliseconds: 500));
+    final String conectado = GlobalSettings().appSetting.logado['conectado']!;
+
+    if (conectado == 'N') {
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    }
   }
 
   @override

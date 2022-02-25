@@ -17,9 +17,25 @@ class PersonEmailPasswordWidget extends StatefulWidget {
 class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
+  late RegisterController controller;
   FocusNode email = FocusNode();
   FocusNode password = FocusNode();
-  var visiblePassword = true;
+  late bool visiblePassword = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller;
+    controllerEmail.text = controller.user.email ?? '';
+    controllerPassword.text = controller.user.senha ?? '';
+  }
+
+  @override
+  void dispose() {
+    controllerEmail.dispose();
+    controllerPassword.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +43,7 @@ class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MyInputWidget(
+          textCapitalization: TextCapitalization.none,
           autovalidateMode: AutovalidateMode.always,
           formKey: widget.controller.keyEmail,
           textEditingController: controllerEmail,
@@ -42,19 +59,19 @@ class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
         ),
         SizedBox(height: 10),
         MyInputWidget(
+          textCapitalization: TextCapitalization.none,
           formKey: widget.controller.keySenha,
           textEditingController: controllerPassword,
           focusNode: password,
-          obscureText: visiblePassword,
+          obscureText: !visiblePassword,
           hintText: 'Senha',
           campoVazio: 'Digite sua Senha',
           suffixIcon: GestureDetector(
             child: Icon(
-              !visiblePassword ? Icons.visibility : Icons.visibility_off,
+              visiblePassword ? Icons.visibility : Icons.visibility_off,
               size: 25,
-              color: !visiblePassword
-                  ? AppTheme.colors.primary
-                  : Color(0xFF666666),
+              color:
+                  visiblePassword ? AppTheme.colors.primary : Color(0xFF666666),
             ),
             onTap: () {
               visiblePassword = !visiblePassword;

@@ -61,14 +61,6 @@ mixin _$MapsController on _MapsControllerBase, Store {
     return _$abreMapaAsyncAction.run(() => super.abreMapa());
   }
 
-  final _$inicializarMarkerAsyncAction =
-      AsyncAction('_MapsControllerBase.inicializarMarker');
-
-  @override
-  Future<void> inicializarMarker() {
-    return _$inicializarMarkerAsyncAction.run(() => super.inicializarMarker());
-  }
-
   final _$navigateToAsyncAction = AsyncAction('_MapsControllerBase.navigateTo');
 
   @override

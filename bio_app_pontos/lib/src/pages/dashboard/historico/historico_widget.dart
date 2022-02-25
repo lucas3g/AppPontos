@@ -40,7 +40,6 @@ class _HistorioWidgetState extends State<HistorioWidget> {
               fontSize: 20,
             ),
           ),
-          SizedBox(height: 10),
           Observer(builder: (_) {
             return controller.status == HistoricoStatus.success
                 ? Expanded(
@@ -140,10 +139,11 @@ class _HistorioWidgetState extends State<HistorioWidget> {
                   )
                 : Expanded(
                     child: ListView.separated(
-                        itemBuilder: (_, __) =>
-                            LoadingWidget(size: Size(0, 50), radius: 10),
-                        separatorBuilder: (_, __) => SizedBox(height: 10),
-                        itemCount: 10),
+                      itemBuilder: (_, __) =>
+                          LoadingWidget(size: Size(0, 50), radius: 10),
+                      separatorBuilder: (_, __) => SizedBox(height: 10),
+                      itemCount: 10,
+                    ),
                   );
           })
         ],

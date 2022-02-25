@@ -70,7 +70,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'Lucas Emanuel Silva dos Santos Paulo',
+                          user!.nome ?? '',
                           style: AppTheme.textStyles.titleNome,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -91,13 +91,13 @@ class _DashBoardPageState extends State<DashBoardPage> {
             child: PageView(
               onPageChanged: onPageChanged,
               physics:
-                  currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
+                  currentIndex == 3 ? NeverScrollableScrollPhysics() : null,
               controller: controllerPage,
               children: [
                 PontosWidget(),
                 HistorioWidget(),
-                LocalizationWidget(),
                 ConfigPage(),
+                LocalizationWidget(),
               ],
             ),
           ),
@@ -119,11 +119,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
             color: Colors.white,
           ),
           Icon(
-            Icons.location_on,
+            Icons.person_rounded,
             color: Colors.white,
           ),
           Icon(
-            Icons.settings_rounded,
+            Icons.location_on,
             color: Colors.white,
           ),
         ],

@@ -51,10 +51,10 @@ class _PersonDataWidgetState extends State<PersonDataWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyInputWidget(
+            textCapitalization: TextCapitalization.words,
             autovalidateMode: AutovalidateMode.always,
             formKey: controller.keyNome,
             textEditingController: controllerNome,
-            inputFormaters: [UpperCaseTextFormatter()],
             focusNode: nome,
             hintText: 'Nome Completo',
             campoVazio: 'Digite seu Nome Completo',

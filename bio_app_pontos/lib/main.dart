@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bio_app_pontos/app_widget.dart';
 import 'package:bio_app_pontos/src/configs/app_settings.dart';
+import 'package:bio_app_pontos/src/controllers/configuracao/config_controller.dart';
 import 'package:bio_app_pontos/src/controllers/historico/historico_controller.dart';
 import 'package:bio_app_pontos/src/controllers/login/login_controller.dart';
 import 'package:bio_app_pontos/src/controllers/maps/maps_controller.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
       getIt.registerSingleton<AppSettings>(AppSettings());
       getIt.registerSingleton<RegisterController>(RegisterController());
       getIt.registerSingleton<LoginController>(LoginController());
+      getIt.registerSingleton<ConfigController>(ConfigController());
       getIt.registerSingleton<MapsController>(MapsController());
       getIt.registerSingleton<PontosPromocoesController>(
           PontosPromocoesController());

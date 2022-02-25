@@ -133,8 +133,8 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
       AsyncAction('_RegisterControllerBase.registerUser');
 
   @override
-  Future<void> registerUser({required UserModel user}) {
-    return _$registerUserAsyncAction.run(() => super.registerUser(user: user));
+  Future<bool> registerUser() {
+    return _$registerUserAsyncAction.run(() => super.registerUser());
   }
 
   final _$buscaCEPAsyncAction = AsyncAction('_RegisterControllerBase.buscaCEP');
@@ -152,6 +152,15 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
   Future<List<String>> buscaMunicipios({required String uf}) {
     return _$buscaMunicipiosAsyncAction
         .run(() => super.buscaMunicipios(uf: uf));
+  }
+
+  final _$verificaCPFCadastradoAsyncAction =
+      AsyncAction('_RegisterControllerBase.verificaCPFCadastrado');
+
+  @override
+  Future<bool> verificaCPFCadastrado() {
+    return _$verificaCPFCadastradoAsyncAction
+        .run(() => super.verificaCPFCadastrado());
   }
 
   final _$_RegisterControllerBaseActionController =
