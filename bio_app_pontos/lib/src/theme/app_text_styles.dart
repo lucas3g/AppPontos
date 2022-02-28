@@ -21,7 +21,9 @@ class AppTextStylesDefault implements AppTextStyles {
 
   @override
   TextStyle get title => GoogleFonts.montserrat(
-      fontSize: 40, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
+      fontSize: 40,
+      color: AppTheme.colors.primary,
+      fontWeight: FontWeight.w700);
 
   @override
   TextStyle get titleImages => GoogleFonts.montserrat(
@@ -37,11 +39,15 @@ class AppTextStylesDefault implements AppTextStyles {
 
   @override
   TextStyle get titlePontos => GoogleFonts.montserrat(
-      fontSize: 40, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
+      fontSize: 40,
+      color: AppTheme.colors.primary,
+      fontWeight: FontWeight.w700);
 
   @override
   TextStyle get titleNome => GoogleFonts.montserrat(
-      fontSize: 14, color: AppTheme.colors.title, fontWeight: FontWeight.w700);
+      fontSize: 14,
+      color: AppTheme.colors.primary,
+      fontWeight: FontWeight.w700);
 
   @override
   TextStyle get titleImageNaoEncontrada => GoogleFonts.montserrat(

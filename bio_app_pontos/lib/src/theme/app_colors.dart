@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:core';
 
 abstract class AppColors {
   Color get backgroundPrimary;
@@ -8,6 +9,10 @@ abstract class AppColors {
   Color get titleContainers;
   Color get titlePontos;
   MaterialColor get primary;
+
+  final String hex = '0xff';
+  final String colorFinal = '700391';
+  final int hexFinal = 0;
 }
 
 class AppColorDefault implements AppColors {
@@ -43,5 +48,14 @@ class AppColorDefault implements AppColors {
   };
 
   @override
-  MaterialColor get primary => MaterialColor(0xffcf1f36, color);
+  String get hex => '0xff';
+
+  @override
+  String get colorFinal => 'cf1f36';
+
+  @override
+  int get hexFinal => int.parse('$hex$colorFinal');
+
+  @override
+  MaterialColor get primary => MaterialColor(hexFinal, color);
 }

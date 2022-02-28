@@ -1,10 +1,10 @@
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
-import 'package:bio_app_pontos/src/pages/dashboard/config/config_page.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/historico/historico_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/localization/localization_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/pontos/pontos_widget.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
+import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -41,67 +41,106 @@ class _DashBoardPageState extends State<DashBoardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.colors.backgroundPrimary,
+      appBar: AppBar(
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.list),
+            color: Colors.red,
+            onPressed: () {},
+          );
+        }),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        toolbarHeight: context.screenHeight * 0.15,
+        flexibleSpace: Container(
+          margin: EdgeInsets.only(top: 30),
+          padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 10),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Bem-Vindo',
+                        style: AppTheme.textStyles.titleNome,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        user!.nome ?? '',
+                        style: AppTheme.textStyles.titleNome,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        '${dataHoje.DiaMesAno()}',
+                        style: AppTheme.textStyles.titleNome,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Bem-Vindo',
-                          style: AppTheme.textStyles.titleNome,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          user!.nome ?? '',
-                          style: AppTheme.textStyles.titleNome,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          '${dataHoje.DiaMesAno()}',
-                          style: AppTheme.textStyles.titleNome,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: PageView(
               onPageChanged: onPageChanged,
               physics:
-                  currentIndex == 3 ? NeverScrollableScrollPhysics() : null,
+                  currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
               controller: controllerPage,
               children: [
                 PontosWidget(),
                 HistorioWidget(),
-                ConfigPage(),
                 LocalizationWidget(),
               ],
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: AppTheme.colors.primary,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: CurvedNavigationBar(
         index: currentIndex,
@@ -116,10 +155,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
           ),
           Icon(
             Icons.list,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.person_rounded,
             color: Colors.white,
           ),
           Icon(

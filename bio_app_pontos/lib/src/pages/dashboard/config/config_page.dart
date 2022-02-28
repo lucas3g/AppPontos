@@ -18,11 +18,53 @@ class ConfigPage extends StatefulWidget {
 
 class _ConfigPageState extends State<ConfigPage> {
   final controller = GlobalSettings().appSetting;
-
   final configController = GlobalSettings().configController;
+  final registerController = GlobalSettings().registerController;
+
+  late String initialValue = 'Rio Grande do Sul';
+  final List<String> estados = [
+    'Acre',
+    'Alagoas',
+    'Amapá',
+    'Amazonas',
+    'Bahia',
+    'Ceará',
+    'Espírito Santo',
+    'Goiás',
+    'Maranhão',
+    'Mato Grosso',
+    'Mato Grosso do Sul',
+    'Minas Gerais',
+    'Pará',
+    'Paraíba',
+    'Paraná',
+    'Pernambuco',
+    'Piauí',
+    'Rio de Janeiro',
+    'Rio Grande do Norte',
+    'Rio Grande do Sul',
+    'Rondônia',
+    'Santa Catarina',
+    'São Paulo',
+    'Sergipe',
+    'Tocantins',
+    'Distrito Federal',
+  ];
+  late List<String> filteredEstados = [];
+  late List<String> municipios = [];
+  late List<String> filteredMunicipios = [];
+
+  late bool onTappedEstado = false;
 
   Future<void> carregaDados() async {
     await configController.carregaDados();
+  }
+
+  void filtraEstados(String value) async {
+    filteredEstados = estados
+        .where((e) => (e.toLowerCase().contains(value.toLowerCase())))
+        .toList();
+    setState(() {});
   }
 
   @override
@@ -103,13 +145,126 @@ class _ConfigPageState extends State<ConfigPage> {
                                   onChanged: (_) {},
                                 ),
                                 SizedBox(height: 15),
-                                MyInputWidget(
-                                  focusNode: configController.fEstado,
-                                  hintText: 'Estado',
-                                  formKey: configController.keyEstado,
-                                  textEditingController: configController
-                                      .estadoTextEditingController,
-                                  onChanged: (_) {},
+                                Column(
+                                  children: [
+                                    TextFormField(
+                                      onTap: () async {
+                                        setState(() {
+                                          onTappedEstado = !onTappedEstado;
+                                        });
+                                      },
+                                      onChanged: (value) {
+                                        filtraEstados(value);
+                                        if (value.isEmpty) {
+                                          filteredMunicipios = [];
+                                          configController
+                                              .munTextEditingController
+                                              .text = '';
+                                        }
+                                      },
+                                      controller: configController
+                                          .estadoTextEditingController,
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            color: configController
+                                                    .estadoTextEditingController
+                                                    .text
+                                                    .isNotEmpty
+                                                ? AppTheme.colors.primary
+                                                : Colors.grey.shade700,
+                                          ),
+                                        ),
+                                        filled: true,
+                                        isDense: true,
+                                        fillColor: Colors.transparent,
+                                        suffixIcon: AnimatedRotation(
+                                          turns: onTappedEstado ? 0.5 : 0,
+                                          duration: Duration(milliseconds: 300),
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down_rounded,
+                                            size: 30,
+                                          ),
+                                        ),
+                                        labelText: "Estado",
+                                      ),
+                                    ),
+                                    AnimatedAlign(
+                                      alignment: Alignment.center,
+                                      duration: Duration(milliseconds: 300),
+                                      heightFactor: onTappedEstado ? 1 : 0,
+                                      child: AnimatedOpacity(
+                                        opacity: onTappedEstado ? 1 : 0,
+                                        duration: Duration(milliseconds: 300),
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              top: 15, left: 5, right: 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: AppTheme.colors.primary),
+                                          ),
+                                          child: Container(
+                                            height: 180,
+                                            child: filteredEstados.isNotEmpty
+                                                ? ListView.separated(
+                                                    itemBuilder:
+                                                        (_, int index) {
+                                                      return ListTile(
+                                                        onTap: () async {
+                                                          onTappedEstado =
+                                                              !onTappedEstado;
+                                                          configController
+                                                                  .estadoTextEditingController
+                                                                  .text =
+                                                              filteredEstados[
+                                                                  index];
+                                                          municipios =
+                                                              await registerController
+                                                                  .buscaMunicipios(
+                                                            uf: filteredEstados[
+                                                                index],
+                                                          );
+                                                          filteredMunicipios =
+                                                              municipios;
+                                                          configController
+                                                              .munTextEditingController
+                                                              .text = '';
+                                                          setState(() {});
+                                                        },
+                                                        title: Text(
+                                                            filteredEstados[
+                                                                index]),
+                                                      );
+                                                    },
+                                                    separatorBuilder: (_, __) =>
+                                                        Divider(),
+                                                    itemCount:
+                                                        filteredEstados.length,
+                                                  )
+                                                : SizedBox(
+                                                    width: double.maxFinite,
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Nenhum estado encontrado.',
+                                                        style: AppTheme
+                                                            .textStyles.button
+                                                            .copyWith(
+                                                          color: Colors.grey,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                                 SizedBox(height: 15),
                                 MyInputWidget(
@@ -176,6 +331,30 @@ class _ConfigPageState extends State<ConfigPage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
+                    onPressed: () async {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.save_as_rounded),
+                        Text(
+                          'Salvar dados',
+                          style: AppTheme.textStyles.button,
+                        ),
+                        SizedBox()
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      shadowColor: AppTheme.colors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: ElevatedButton(
                     onPressed: () async {
                       controller.setLogado(conectado: 'N');
                       controller.user = UserModel();
@@ -191,9 +370,16 @@ class _ConfigPageState extends State<ConfigPage> {
                         (route) => false,
                       );
                     },
-                    child: Text(
-                      'Sair do App',
-                      style: AppTheme.textStyles.button,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.logout_rounded),
+                        Text(
+                          'Sair do App',
+                          style: AppTheme.textStyles.button,
+                        ),
+                        SizedBox()
+                      ],
                     ),
                     style: ElevatedButton.styleFrom(
                       elevation: 5,
