@@ -1,8 +1,6 @@
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
-import 'package:bio_app_pontos/src/pages/login/login_page.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);

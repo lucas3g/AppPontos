@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
+import 'package:bio_app_pontos/src/controllers/login/login_controller.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status_cep.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
+import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
 import 'package:bio_app_pontos/src/utils/types_toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +18,8 @@ part 'register_controller.g.dart';
 class RegisterController = _RegisterControllerBase with _$RegisterController;
 
 abstract class _RegisterControllerBase with Store {
+  final loginController = LoginController();
+
   @observable
   UserModel user = UserModel();
 
@@ -72,7 +76,7 @@ abstract class _RegisterControllerBase with Store {
   }
 
   @action
-  Future<bool> registerUser() async {
+  Future<bool> registerUser({required BuildContext context}) async {
     try {
       status = RegisterStatus.loading;
       await Future.delayed(Duration(milliseconds: 600));
@@ -83,11 +87,12 @@ abstract class _RegisterControllerBase with Store {
           return false;
         }
         final response = await MeuDio.dio().post(
-            '/setJson/01459027/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+            '/setJson/${Constants.cnpj}/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
             data: user.toJson());
 
         if (response.statusCode == 200) {
           await GlobalSettings().appSetting.setUser(user: user);
+          await loginController.acessarApp(context: context, user: user);
           status = RegisterStatus.success;
           return true;
         } else {
@@ -325,7 +330,7 @@ abstract class _RegisterControllerBase with Store {
       status = RegisterStatus.loading;
 
       final response = await MeuDio.dio().post(
-        '/getJson/01459027/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+        '/getJson/${Constants.cnpj}/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
       );
 
       if (jsonDecode(response.data)['cpf'] == user.cpf) {

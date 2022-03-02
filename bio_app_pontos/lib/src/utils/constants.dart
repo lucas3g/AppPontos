@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class Constants {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
+  static final String cnpj = '01459027';
 }
 
 extension ContextExtensions on BuildContext {

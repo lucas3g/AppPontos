@@ -71,6 +71,8 @@ class _MyInputWidgetState extends State<MyInputWidget> {
             return 'Celular deve conter 11 caracteres';
           } else if (widget.hintText == 'Placa' && value.length < 7) {
             return 'Placa deve conter 7 caracteres';
+          } else if (widget.hintText == 'Senha' && value.length < 6) {
+            return 'Senha deve conter pelo menos 6 caracteres';
           } else if (widget.hintText == 'Nome Completo' && value.length < 5) {
             return 'Nome deve conter pelo menos 5 caracteres';
           }

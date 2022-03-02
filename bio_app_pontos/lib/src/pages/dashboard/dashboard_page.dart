@@ -1,6 +1,6 @@
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
-import 'package:bio_app_pontos/src/pages/dashboard/historico/historico_widget.dart';
+import 'package:bio_app_pontos/src/pages/dashboard/config/config_page.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/localization/localization_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/pontos/pontos_widget.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
@@ -42,13 +42,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
     return Scaffold(
       backgroundColor: AppTheme.colors.backgroundPrimary,
       appBar: AppBar(
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: Icon(Icons.list),
-            color: Colors.red,
-            onPressed: () {},
-          );
-        }),
         backgroundColor: Colors.white,
         elevation: 0,
         toolbarHeight: context.screenHeight * 0.15,
@@ -104,44 +97,45 @@ class _DashBoardPageState extends State<DashBoardPage> {
             child: PageView(
               onPageChanged: onPageChanged,
               physics:
-                  currentIndex == 2 ? NeverScrollableScrollPhysics() : null,
+                  currentIndex == 1 ? NeverScrollableScrollPhysics() : null,
               controller: controllerPage,
               children: [
                 PontosWidget(),
-                HistorioWidget(),
+                //HistorioWidget(),
                 LocalizationWidget(),
+                ConfigPage(),
               ],
             ),
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: AppTheme.colors.primary,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: [
+      //       DrawerHeader(
+      //         decoration: BoxDecoration(
+      //           color: AppTheme.colors.primary,
+      //         ),
+      //         child: Text('Drawer Header'),
+      //       ),
+      //       ListTile(
+      //         title: const Text('Item 1'),
+      //         onTap: () {
+      //           // Update the state of the app.
+      //           // ...
+      //         },
+      //       ),
+      //       ListTile(
+      //         title: const Text('Item 2'),
+      //         onTap: () {
+      //           // Update the state of the app.
+      //           // ...
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
       bottomNavigationBar: CurvedNavigationBar(
         index: currentIndex,
         height: 50,
@@ -153,12 +147,16 @@ class _DashBoardPageState extends State<DashBoardPage> {
             Icons.home_rounded,
             color: Colors.white,
           ),
+          // Icon(
+          //   Icons.list,
+          //   color: Colors.white,
+          // ),
           Icon(
-            Icons.list,
+            Icons.location_on,
             color: Colors.white,
           ),
           Icon(
-            Icons.location_on,
+            Icons.settings_rounded,
             color: Colors.white,
           ),
         ],

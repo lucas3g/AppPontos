@@ -63,6 +63,14 @@ mixin _$PontosPromocoesController on _PontosPromocoesControllerBase, Store {
     return _$carregaDadosAsyncAction.run(() => super.carregaDados());
   }
 
+  final _$buscaOfertasAsyncAction =
+      AsyncAction('_PontosPromocoesControllerBase.buscaOfertas');
+
+  @override
+  Future<void> buscaOfertas() {
+    return _$buscaOfertasAsyncAction.run(() => super.buscaOfertas());
+  }
+
   @override
   String toString() {
     return '''

@@ -1,5 +1,4 @@
 import 'package:bio_app_pontos/src/controllers/register/register_controller.dart';
-import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:brasil_fields/brasil_fields.dart';

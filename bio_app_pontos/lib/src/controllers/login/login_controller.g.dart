@@ -58,8 +58,16 @@ mixin _$LoginController on _LoginControllerBase, Store {
       AsyncAction('_LoginControllerBase.acessarApp');
 
   @override
-  Future<void> acessarApp() {
-    return _$acessarAppAsyncAction.run(() => super.acessarApp());
+  Future<void> acessarApp({required BuildContext context, UserModel? user}) {
+    return _$acessarAppAsyncAction
+        .run(() => super.acessarApp(context: context, user: user));
+  }
+
+  final _$deslogarAsyncAction = AsyncAction('_LoginControllerBase.deslogar');
+
+  @override
+  Future<void> deslogar() {
+    return _$deslogarAsyncAction.run(() => super.deslogar());
   }
 
   @override

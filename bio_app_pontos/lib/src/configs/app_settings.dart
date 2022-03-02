@@ -58,6 +58,7 @@ class AppSettings extends ChangeNotifier {
     await _prefs.remove('conectado');
     await _prefs.remove('user');
     await _prefs.remove('impressora');
+    setLogado(conectado: 'N');
     controller.limpaDados();
     await _readLogado();
   }

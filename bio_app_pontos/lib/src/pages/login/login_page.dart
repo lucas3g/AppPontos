@@ -1,16 +1,12 @@
 import 'package:bio_app_pontos/src/components/button_login_widget.dart';
 import 'package:bio_app_pontos/src/components/my_input_widget.dart';
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
-import 'package:bio_app_pontos/src/controllers/login/login_status.dart';
 import 'package:bio_app_pontos/src/pages/register/register_page.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
-import 'package:bio_app_pontos/src/utils/meu_toast.dart';
-import 'package:bio_app_pontos/src/utils/types_toast.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobx/mobx.dart';
 import 'package:page_transition/page_transition.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,41 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   FocusNode password = FocusNode();
   GlobalKey<FormState> keySenha = GlobalKey<FormState>();
   GlobalKey<FormState> keyCPF = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    autorun((_) async {
-      if (controller.status == LoginStatus.success) {
-        Navigator.pushReplacementNamed(context, '/dashboard');
-      } else if (controller.status == LoginStatus.error) {
-        MeuToast.toast(
-            title: 'Ops... :(',
-            message: 'Não Foi Possivel Fazer Login.Verifique seus Dados.',
-            type: TypeToast.error,
-            context: context);
-      } else if (controller.status == LoginStatus.semInternet) {
-        MeuToast.toast(
-            title: 'Ops... :(',
-            message: 'Parece que você está sem Internet',
-            type: TypeToast.noNet,
-            context: context);
-      } else if (controller.status == LoginStatus.invalidCPF) {
-        MeuToast.toast(
-            title: 'Ops... :(',
-            message: 'Você digitou um CPF inválido.',
-            type: TypeToast.dadosInv,
-            context: context);
-      } else if (controller.status == LoginStatus.naoAutorizado) {
-        MeuToast.toast(
-            title: 'Ops... :(',
-            message:
-                'Seu usuário não tem permissão para acessar o aplicativo.\nVerifique seu usuário e/ou senha.',
-            type: TypeToast.dadosInv,
-            context: context);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                       return;
                     }
                     FocusScope.of(context).requestFocus(FocusNode());
-                    await controller.acessarApp();
+                    await controller.acessarApp(context: context);
                   },
                   onChanged: (String? password) {
                     controller.password = password!;

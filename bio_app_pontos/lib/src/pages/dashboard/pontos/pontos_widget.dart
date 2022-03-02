@@ -58,7 +58,9 @@ class _PontosWidgetState extends State<PontosWidget> {
                       children: [
                         Observer(builder: (context) {
                           return controller.status ==
-                                  PontosPromocoesStatus.success
+                                      PontosPromocoesStatus.success ||
+                                  controller.status ==
+                                      PontosPromocoesStatus.error
                               ? AnimatedCountText(
                                   begin: 0,
                                   end: controller.saldo.saldo!,
@@ -94,14 +96,13 @@ class _PontosWidgetState extends State<PontosWidget> {
                           )
                         ],
                       ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Observer(builder: (context) {
-                              return controller.status ==
-                                      PontosPromocoesStatus.success
-                                  ? Wrap(
+                      child: Observer(builder: (context) {
+                        return controller.promocoes.isNotEmpty
+                            ? SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Wrap(
                                       children: [
                                         ...controller.promocoes.map(
                                           (e) => ItensPromocoesWidget(
@@ -111,19 +112,48 @@ class _PontosWidgetState extends State<PontosWidget> {
                                           ),
                                         )
                                       ],
-                                    )
-                                  : Row(
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : controller.status == PontosPromocoesStatus.loading
+                                ? Center(
+                                    child: Wrap(
                                       children: [
-                                        Expanded(
+                                        LoadingWidget(
+                                            size: Size(140, 150), radius: 10),
+                                        SizedBox(width: 10),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
                                           child: LoadingWidget(
-                                              size: Size(0, 450), radius: 10),
+                                              size: Size(140, 150), radius: 10),
+                                        ),
+                                        LoadingWidget(
+                                            size: Size(140, 150), radius: 10),
+                                        SizedBox(width: 10),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: LoadingWidget(
+                                              size: Size(140, 150), radius: 10),
                                         ),
                                       ],
-                                    );
-                            }),
-                          ],
-                        ),
-                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    child: Center(
+                                      child: FittedBox(
+                                        child: Text(
+                                          'Nenhuma promoção encontrada para este dia. :(',
+                                          style:
+                                              AppTheme.textStyles.textoSairApp,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                      }),
                     ),
                   ),
                 ],

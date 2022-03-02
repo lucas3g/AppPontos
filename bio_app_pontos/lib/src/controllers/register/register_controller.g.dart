@@ -148,8 +148,9 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
       AsyncAction('_RegisterControllerBase.registerUser');
 
   @override
-  Future<bool> registerUser() {
-    return _$registerUserAsyncAction.run(() => super.registerUser());
+  Future<bool> registerUser({required BuildContext context}) {
+    return _$registerUserAsyncAction
+        .run(() => super.registerUser(context: context));
   }
 
   final _$buscaCEPAsyncAction = AsyncAction('_RegisterControllerBase.buscaCEP');

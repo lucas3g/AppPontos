@@ -186,19 +186,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           return;
                         }
                       }
-                      if (await controller.registerUser()) {
+                      if (await controller.registerUser(context: context)) {
                         controller.user = UserModel();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          PageTransition(
-                            child: LoginPage(),
-                            type: PageTransitionType.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            alignment: Alignment.center,
-                          ),
-                          (route) => false,
-                        );
                       }
                     }
                   },

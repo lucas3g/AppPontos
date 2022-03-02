@@ -7,6 +7,7 @@ import 'package:bio_app_pontos/src/models/promoces.dart';
 import 'package:bio_app_pontos/src/models/saldo.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
+import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:mobx/mobx.dart';
 part 'pontos_promocoes_controller.g.dart';
 
@@ -26,81 +27,62 @@ abstract class _PontosPromocoesControllerBase with Store {
   @action
   Future<void> carregaDados() async {
     try {
+      promocoes.clear();
       status = PontosPromocoesStatus.loading;
 
       final UserModel user = GlobalSettings().appSetting.user;
 
       final result = await InternetAddress.lookup(MeuDio.baseUrl);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        final response = await MeuDio.dio().post(
-          '/getJson/01459027/pontos/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+        final response = await MeuDio.dio().get(
+          '/getJson/${Constants.cnpj}/pontos/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
         );
         await Future.delayed(Duration(milliseconds: 600));
         if (response.statusCode == 200) {
           saldo.saldo = jsonDecode(response.data)['saldo'];
-          promocoes.clear();
-          promocoes.add(
-            PromocoesModel(
-              descricao: 'Wafer Limão - Minueto',
-              path_image:
-                  'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-              quantidade: 3,
-              preco: 2.75,
-            ),
-          );
-          promocoes.add(
-            PromocoesModel(
-              descricao: 'Coca-Cola',
-              path_image:
-                  'https://cdn-cosmos.bluesoft.com.br/products/7894900011715',
-              quantidade: 3,
-              preco: 3.75,
-            ),
-          );
-          promocoes.add(
-            PromocoesModel(
-              descricao: 'Wafer Limão - Minueto',
-              path_image:
-                  'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-              quantidade: 3,
-              preco: 2.75,
-            ),
-          );
-          promocoes.add(
-            PromocoesModel(
-              descricao: 'Coca-Cola',
-              path_image:
-                  'https://cdn-cosmos.bluesoft.com.br/products/7894900011715',
-              quantidade: 3,
-              preco: 3.75,
-            ),
-          );
-          promocoes.add(
-            PromocoesModel(
-              descricao: 'Wafer Limão - Minueto',
-              path_image:
-                  'https://cdn-cosmos.bluesoft.com.br/products/7896011103754',
-              quantidade: 3,
-              preco: 2.75,
-            ),
-          );
-          promocoes.add(
-            PromocoesModel(
-              descricao: 'Coca-Cola',
-              path_image:
-                  'https://cdn-cosmos.bluesoft.com.br/products/7894900011715',
-              quantidade: 3,
-              preco: 3.75,
-            ),
-          );
-          status = PontosPromocoesStatus.success;
-        } else {
-          saldo.copyWith(saldo: 0);
-          status = PontosPromocoesStatus.error;
         }
+
+        await buscaOfertas();
+
+        status = PontosPromocoesStatus.success;
+      } else {
+        saldo = saldo.copyWith(saldo: 0);
+        await buscaOfertas();
+        status = PontosPromocoesStatus.error;
       }
     } catch (e) {
+      saldo = saldo.copyWith(saldo: 0);
+      await buscaOfertas();
       status = PontosPromocoesStatus.error;
+    }
+  }
+
+  @action
+  Future<void> buscaOfertas() async {
+    promocoes.clear();
+    final responsePromocoes = await MeuDio.dio().get(
+      '/getJson/${Constants.cnpj}/ofertas/ofertas',
+    );
+
+    if (responsePromocoes.statusCode == 200 && responsePromocoes.data != "") {
+      final promocoesApi =
+          jsonDecode(responsePromocoes.data).map<PromocoesModel>((e) {
+        return PromocoesModel(
+          descricao: e['descricao'],
+          path_image:
+              'https://cdn-cosmos.bluesoft.com.br/products/${e['gtin']}',
+          quantidade: 0,
+          preco: e['vendaPromocao'],
+        );
+      }).toList();
+
+      if (promocoesApi == null) {
+        promocoes = ObservableList.of([]);
+        return;
+      }
+      promocoes = ObservableList.of(promocoesApi);
+    } else {
+      promocoes = ObservableList.of([]);
     }
   }
 }
