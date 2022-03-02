@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
+import 'package:bio_app_pontos/src/controllers/register/register_status_cep.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
@@ -20,6 +21,9 @@ abstract class _RegisterControllerBase with Store {
 
   @observable
   RegisterStatus status = RegisterStatus.empty;
+
+  @observable
+  RegisterStatusCep statusCep = RegisterStatusCep.empty;
 
   @observable
   GlobalKey<FormState> keyNome = GlobalKey<FormState>();
@@ -102,7 +106,7 @@ abstract class _RegisterControllerBase with Store {
   @action
   Future<List<String>> buscaCEP(
       {required String cep, required BuildContext cxt}) async {
-    status = RegisterStatus.loading;
+    statusCep = RegisterStatusCep.loading;
 
     try {
       final List<String> lista = [];
@@ -198,11 +202,11 @@ abstract class _RegisterControllerBase with Store {
 
       lista.add(jsonDecode(response.body)['localidade']);
 
-      status = RegisterStatus.success;
+      statusCep = RegisterStatusCep.success;
 
       return lista;
     } catch (e) {
-      status = RegisterStatus.error;
+      statusCep = RegisterStatusCep.error;
       MeuToast.toast(
           title: 'Ops..',
           message: 'CEP não encontrado.',

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../components/my_input_widget.dart';
+import '../../../controllers/register/register_status_cep.dart';
 
 class PersonAddressWidget extends StatefulWidget {
   final RegisterController controller;
@@ -184,19 +185,22 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                           );
                           filteredMunicipios = municipios;
                         },
-                        child: controller.status == RegisterStatus.success ||
-                                controller.status == RegisterStatus.empty ||
-                                controller.status == RegisterStatus.error ||
-                                controller.status ==
-                                    RegisterStatus.cnpjJaCadastrado
-                            ? Text('Buscar CEP')
-                            : Container(
-                                height: 30,
-                                width: 30,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              ),
+                        child:
+                            controller.statusCep == RegisterStatusCep.success ||
+                                    controller.statusCep ==
+                                        RegisterStatusCep.empty ||
+                                    controller.statusCep ==
+                                        RegisterStatusCep.error ||
+                                    controller.statusCep ==
+                                        RegisterStatusCep.cnpjJaCadastrado
+                                ? Text('Buscar CEP')
+                                : Container(
+                                    height: 30,
+                                    width: 30,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                         style: ElevatedButton.styleFrom(
                           fixedSize: Size(120, 50),
                           shape: RoundedRectangleBorder(

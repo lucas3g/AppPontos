@@ -1,3 +1,4 @@
+import 'package:bio_app_pontos/src/components/button_login_widget.dart';
 import 'package:bio_app_pontos/src/components/my_input_widget.dart';
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/login/login_status.dart';
@@ -9,7 +10,6 @@ import 'package:bio_app_pontos/src/utils/types_toast.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -143,48 +143,10 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 SizedBox(height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (!keyCPF.currentState!.validate() ||
-                              !keySenha.currentState!.validate()) {
-                            return;
-                          }
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          await controller.acessarApp();
-                        },
-                        child: Observer(builder: (context) {
-                          return controller.status == LoginStatus.empty ||
-                                  controller.status == LoginStatus.error ||
-                                  controller.status == LoginStatus.success ||
-                                  controller.status == LoginStatus.invalidCPF ||
-                                  controller.status == LoginStatus.semInternet
-                              ? Text(
-                                  'Entrar',
-                                  style: AppTheme.textStyles.button
-                                      .copyWith(fontSize: 16),
-                                )
-                              : Center(
-                                  child: Container(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                        }),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          fixedSize: Size(0, 45),
-                        ),
-                      ),
-                    )
-                  ],
+                ButtonLoginWidget(
+                  keySenha: keySenha,
+                  keyCPF: keyCPF,
+                  controller: controller,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

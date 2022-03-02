@@ -39,6 +39,21 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
     });
   }
 
+  final _$statusCepAtom = Atom(name: '_RegisterControllerBase.statusCep');
+
+  @override
+  RegisterStatusCep get statusCep {
+    _$statusCepAtom.reportRead();
+    return super.statusCep;
+  }
+
+  @override
+  set statusCep(RegisterStatusCep value) {
+    _$statusCepAtom.reportWrite(value, super.statusCep, () {
+      super.statusCep = value;
+    });
+  }
+
   final _$keyNomeAtom = Atom(name: '_RegisterControllerBase.keyNome');
 
   @override
@@ -208,6 +223,7 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
     return '''
 user: ${user},
 status: ${status},
+statusCep: ${statusCep},
 keyNome: ${keyNome},
 keyCpf: ${keyCpf},
 keyCelular: ${keyCelular},
