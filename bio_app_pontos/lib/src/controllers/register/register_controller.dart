@@ -79,7 +79,7 @@ abstract class _RegisterControllerBase with Store {
   Future<bool> registerUser({required BuildContext context}) async {
     try {
       status = RegisterStatus.loading;
-      await Future.delayed(Duration(milliseconds: 600));
+      await Future.delayed(Duration(seconds: 1));
       final result = await InternetAddress.lookup(MeuDio.baseUrl);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         if (await verificaCPFCadastrado()) {
@@ -92,17 +92,38 @@ abstract class _RegisterControllerBase with Store {
 
         if (response.statusCode == 200) {
           await GlobalSettings().appSetting.setUser(user: user);
+          await Future.delayed(Duration(milliseconds: 300));
           await loginController.acessarApp(context: context, user: user);
           status = RegisterStatus.success;
           return true;
         } else {
+          MeuToast.toast(
+            title: 'Ops...',
+            message:
+                'Não foi possível concluir o seu cadastro, por favor tente novamente.',
+            type: TypeToast.error,
+            context: context,
+          );
           status = RegisterStatus.error;
           return false;
         }
       } else {
+        MeuToast.toast(
+          title: 'Ops...',
+          message: 'Parece que você esta sem internet, por favor verifique.',
+          type: TypeToast.noNet,
+          context: context,
+        );
         return false;
       }
     } catch (e) {
+      MeuToast.toast(
+        title: 'Ops...',
+        message:
+            'Não foi possível concluir o seu cadastro, por favor tente novamente.',
+        type: TypeToast.error,
+        context: context,
+      );
       status = RegisterStatus.error;
       return false;
     }

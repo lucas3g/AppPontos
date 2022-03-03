@@ -12,6 +12,7 @@ abstract class AppTextStyles {
   TextStyle get titleNome;
   TextStyle get titleImageNaoEncontrada;
   TextStyle get textoSairApp;
+  TextStyle get textoCadastroSucesso;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -56,4 +57,8 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get textoSairApp => GoogleFonts.montserrat(
       fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500);
+
+  @override
+  TextStyle get textoCadastroSucesso => GoogleFonts.montserrat(
+      fontSize: 14, color: Colors.white, fontWeight: FontWeight.w700);
 }
