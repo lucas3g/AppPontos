@@ -18,7 +18,7 @@ class _AppWidgetState extends State<AppWidget> {
       navigatorKey: Constants.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: AppTheme.colors.primary),
-      title: 'Bio - CashBack',
+      title: Constants.nomeApp,
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => SplashPage(),

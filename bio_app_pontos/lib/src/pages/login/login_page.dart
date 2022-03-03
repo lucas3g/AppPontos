@@ -1,6 +1,7 @@
 import 'package:bio_app_pontos/src/components/button_login_widget.dart';
 import 'package:bio_app_pontos/src/components/my_input_widget.dart';
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
+import 'package:bio_app_pontos/src/pages/forgot_password/forgot_password_page.dart';
 import 'package:bio_app_pontos/src/pages/register/register_page.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
@@ -109,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                   keyCPF: keyCPF,
                   controller: controller,
                 ),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -117,7 +119,19 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       child: Text('Clique aqui'),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: ForgotPassword(),
+                            type: PageTransitionType.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 500),
+                            reverseDuration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            alignment: Alignment.center,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

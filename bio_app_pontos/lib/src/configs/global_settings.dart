@@ -1,5 +1,6 @@
 import 'package:bio_app_pontos/src/configs/app_settings.dart';
 import 'package:bio_app_pontos/src/controllers/configuracao/config_controller.dart';
+import 'package:bio_app_pontos/src/controllers/forgot_password/forgot_password_controller.dart';
 import 'package:bio_app_pontos/src/controllers/historico/historico_controller.dart';
 import 'package:bio_app_pontos/src/controllers/login/login_controller.dart';
 import 'package:bio_app_pontos/src/controllers/maps/maps_controller.dart';
@@ -15,6 +16,7 @@ class GlobalSettings {
   final loginController = GetIt.I.get<LoginController>();
   final mapsController = GetIt.I.get<MapsController>();
   final configController = GetIt.I.get<ConfigController>();
+  final forgotPasswordController = GetIt.I.get<ForgotPasswordController>();
 
   static recursiveFunction(
       {required Function function,

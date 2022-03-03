@@ -92,9 +92,10 @@ abstract class _RegisterControllerBase with Store {
 
         if (response.statusCode == 200) {
           await GlobalSettings().appSetting.setUser(user: user);
-          await Future.delayed(Duration(milliseconds: 300));
-          await loginController.acessarApp(context: context, user: user);
           status = RegisterStatus.success;
+          await Future.delayed(Duration(seconds: 1));
+          await loginController.acessarApp(context: context, user: user);
+          status = RegisterStatus.empty;
           return true;
         } else {
           MeuToast.toast(
@@ -346,15 +347,19 @@ abstract class _RegisterControllerBase with Store {
   }
 
   @action
-  Future<bool> verificaCPFCadastrado() async {
+  Future<bool> verificaCPFCadastrado({String? cpf}) async {
     try {
       status = RegisterStatus.loading;
 
+      if (cpf == null) {
+        cpf = user.cpf;
+      }
+
       final response = await MeuDio.dio().post(
-        '/getJson/${Constants.cnpj}/usuarios/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+        '/getJson/${Constants.cnpj}/usuarios/${cpf!.replaceAll('.', '').replaceAll('-', '')}',
       );
 
-      if (jsonDecode(response.data)['cpf'] == user.cpf) {
+      if (jsonDecode(response.data)['cpf'] == cpf) {
         status = RegisterStatus.success;
         return true;
       } else {

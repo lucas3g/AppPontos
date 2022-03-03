@@ -144,112 +144,115 @@ class _RegisterPageState extends State<RegisterPage> {
               : Colors.grey.shade100,
           child: Stack(
             children: [
-              Observer(builder: (context) {
-                return AnimatedOpacity(
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 500),
+                opacity: controller.status == RegisterStatus.success ||
+                        controller.status == RegisterStatus.loading
+                    ? 0
+                    : 1,
+                child: AnimatedContainer(
                   duration: Duration(milliseconds: 500),
-                  opacity: controller.status == RegisterStatus.loading ||
-                          controller.status == RegisterStatus.success
-                      ? 0
-                      : 1,
-                  child: Container(
-                    height: 60,
-                    width: context.screenWidth * 0.50,
-                    child: TextButton(
-                      onPressed: () async {
-                        if (currentPage == 0) {
-                          controller.user = UserModel();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            PageTransition(
-                              child: LoginPage(),
-                              type: PageTransitionType.leftToRightWithFade,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                              alignment: Alignment.center,
-                            ),
-                            (route) => false,
-                          );
-                        } else {
-                          await backPage();
-                        }
-                      },
-                      child: Text(currentPage == 0 ? 'Cancelar' : 'Voltar'),
-                    ),
-                  ),
-                );
-              }),
-              Observer(builder: (context) {
-                return AnimatedPositioned(
-                  left: controller.status == RegisterStatus.loading ||
-                          controller.status == RegisterStatus.success
-                      ? 1
-                      : context.screenWidth * 0.50,
-                  duration: Duration(milliseconds: 500),
-                  width: controller.status == RegisterStatus.loading ||
-                          controller.status == RegisterStatus.success
-                      ? context.screenWidth
-                      : context.screenWidth * 0.47,
                   height: 60,
+                  width: context.screenWidth * 0.50,
                   child: TextButton(
                     onPressed: () async {
-                      if (currentPage < 2) {
-                        if (controller.keyNome.currentState != null) {
-                          if (!controller.keyNome.currentState!.validate() ||
-                              !controller.keyCpf.currentState!.validate() ||
-                              !controller.keyCelular.currentState!.validate() ||
-                              !controller.keyPlaca.currentState!.validate()) {
-                            return;
-                          }
-                        }
-
-                        await nextPage();
+                      if (currentPage == 0) {
+                        controller.user = UserModel();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          PageTransition(
+                            child: LoginPage(),
+                            type: PageTransitionType.leftToRightWithFade,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            alignment: Alignment.center,
+                          ),
+                          (route) => false,
+                        );
                       } else {
-                        if (controller.keyEmail.currentState != null) {
-                          if (!controller.keyEmail.currentState!.validate() ||
-                              !controller.keySenha.currentState!.validate()) {
-                            return;
-                          }
-                        }
-                        if (await controller.registerUser(context: context)) {
-                          controller.user = UserModel();
-                        }
+                        await backPage();
                       }
                     },
-                    child: Observer(builder: (context) {
-                      return controller.status == RegisterStatus.empty ||
+                    child: Text(currentPage == 0 ? 'Cancelar' : 'Voltar'),
+                  ),
+                ),
+              ),
+              AnimatedPositioned(
+                left: controller.status == RegisterStatus.success ||
+                        controller.status == RegisterStatus.loading
+                    ? 1
+                    : context.screenWidth * 0.50,
+                duration: Duration(milliseconds: 500),
+                width: controller.status == RegisterStatus.success ||
+                        controller.status == RegisterStatus.loading
+                    ? context.screenWidth
+                    : context.screenWidth * 0.50,
+                height: 60,
+                child: TextButton(
+                  onPressed: () async {
+                    if (currentPage < 2) {
+                      if (controller.keyNome.currentState != null) {
+                        if (!controller.keyNome.currentState!.validate() ||
+                            !controller.keyCpf.currentState!.validate() ||
+                            !controller.keyCelular.currentState!.validate() ||
+                            !controller.keyPlaca.currentState!.validate()) {
+                          return;
+                        }
+                      }
+
+                      await nextPage();
+                    } else {
+                      if (controller.keyEmail.currentState != null) {
+                        if (!controller.keyEmail.currentState!.validate() ||
+                            !controller.keySenha.currentState!.validate()) {
+                          return;
+                        }
+                      }
+                      if (await controller.registerUser(context: context)) {
+                        controller.user = UserModel();
+                      }
+                    }
+                  },
+                  child: controller.status == RegisterStatus.success
+                      ? AnimatedOpacity(
+                          duration: Duration(milliseconds: 500),
+                          opacity: controller.status == RegisterStatus.success
+                              ? 1
+                              : 0,
+                          child: FittedBox(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_rounded,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Cadastro efetuado com sucesso!',
+                                  style:
+                                      AppTheme.textStyles.textoCadastroSucesso,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : controller.status == RegisterStatus.empty ||
                               controller.status == RegisterStatus.error ||
                               controller.status ==
                                   RegisterStatus.cnpjJaCadastrado
                           ? Text(currentPage < 2
                               ? 'Continuar'
                               : 'Finalizar Cadastro')
-                          : controller.status == RegisterStatus.loading
-                              ? Center(
-                                  child: Container(
-                                    width: 30,
-                                    height: 30,
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
-                              : FittedBox(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_rounded,
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text('Cadastro efetuado com sucesso!',
-                                          style: AppTheme
-                                              .textStyles.textoCadastroSucesso),
-                                    ],
-                                  ),
-                                );
-                    }),
-                  ),
-                );
-              }),
+                          : Center(
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                ),
+              ),
             ],
           ),
         );

@@ -174,9 +174,9 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
       AsyncAction('_RegisterControllerBase.verificaCPFCadastrado');
 
   @override
-  Future<bool> verificaCPFCadastrado() {
+  Future<bool> verificaCPFCadastrado({String? cpf}) {
     return _$verificaCPFCadastradoAsyncAction
-        .run(() => super.verificaCPFCadastrado());
+        .run(() => super.verificaCPFCadastrado(cpf: cpf));
   }
 
   final _$_RegisterControllerBaseActionController =
