@@ -2,7 +2,7 @@
     package="com.el_sistemas.bio_app_pontos">
    <application
         android:name="${applicationName}"
-        android:label="Bio Wahl - CashBack"
+        android:label="Bio Wahl - Cashback"
         android:icon="@mipmap/launcher_icon"
         >
 

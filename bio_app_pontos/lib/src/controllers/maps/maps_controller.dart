@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bio_app_pontos/src/controllers/maps/maps_status.dart';
+import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,7 +18,7 @@ abstract class _MapsControllerBase with Store {
 
   @observable
   CameraPosition kGooglePlex = CameraPosition(
-    target: LatLng(-27.9512195, -52.9238309),
+    target: LatLng(Constants.latitude, Constants.longitude),
     zoom: 18,
   );
 
@@ -25,10 +26,10 @@ abstract class _MapsControllerBase with Store {
   Future<void> abreMapa() async {
     status = MapsStatus.loading;
     Marker mk = Marker(
-      markerId: MarkerId('biowahl'),
-      position: LatLng(-27.9512195, -52.9238309),
+      markerId: MarkerId(Constants.idMarker),
+      position: LatLng(Constants.latitude, Constants.longitude),
       infoWindow: InfoWindow(
-        title: 'Bio Wahl Abastecedora',
+        title: Constants.tituloMarker,
       ),
     );
     markerPosto.add(mk);

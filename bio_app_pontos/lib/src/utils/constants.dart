@@ -5,6 +5,13 @@ class Constants {
       GlobalKey<NavigatorState>();
   static final String cnpj = '01459027';
   static final String nomeApp = 'Bio Wahl - Cashback';
+  static final String baseUrlGoogle = 'google.com';
+  static final String baseUrl =
+      'https://elinfo2.jelastic.saveincloud.net/AppCashBack/';
+  static final double latitude = -27.9512195; // BIO - -27.9512195
+  static final double longitude = -52.9238309; // BIO - -52.9238309
+  static final String tituloMarker = 'Bio Wahl Abastecedora';
+  static final String idMarker = 'biowahl'; //
 }
 
 extension ContextExtensions on BuildContext {

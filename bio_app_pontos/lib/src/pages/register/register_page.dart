@@ -170,6 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           (route) => false,
                         );
                       } else {
+                        FocusScope.of(context).requestFocus(FocusNode());
                         await backPage();
                       }
                     },
@@ -199,7 +200,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           return;
                         }
                       }
-
+                      FocusScope.of(context).requestFocus(FocusNode());
                       await nextPage();
                     } else {
                       if (controller.keyEmail.currentState != null) {
@@ -208,6 +209,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           return;
                         }
                       }
+                      FocusScope.of(context).requestFocus(FocusNode());
                       if (await controller.registerUser(context: context)) {
                         controller.user = UserModel();
                       }

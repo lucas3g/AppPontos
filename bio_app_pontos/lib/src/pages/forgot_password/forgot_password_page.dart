@@ -72,7 +72,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         if (!keyCPF.currentState!.validate()) {
                           return;
                         }
-
+                        FocusScope.of(context).requestFocus(FocusNode());
                         await forgotPasswordController.sendEmailPassword(
                             context: context);
                       },

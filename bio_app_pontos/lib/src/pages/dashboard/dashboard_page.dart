@@ -57,7 +57,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 flex: 1,
                 child: Container(
                   child: Image.asset(
-                    'assets/images/logo.png',
+                    context.image_path,
                   ),
                 ),
               ),

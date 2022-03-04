@@ -1,26 +1,22 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/login/login_status.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/dashboard_page.dart';
-import 'package:bio_app_pontos/src/services/check_internet_service.dart';
-import 'package:bio_app_pontos/src/services/dio.dart';
+import 'package:bio_app_pontos/src/repositories/check_internent_cpf.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
 import 'package:bio_app_pontos/src/utils/types_toast.dart';
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mobx/mobx.dart';
 import 'package:page_transition/page_transition.dart';
 part 'login_controller.g.dart';
 
 class LoginController = _LoginControllerBase with _$LoginController;
 
-abstract class _LoginControllerBase with Store {
-  final checkInternetService = CheckInternetService();
-
+abstract class _LoginControllerBase extends CheckInternetCPF with Store {
   @observable
   late String cpf = '';
 
@@ -41,7 +37,7 @@ abstract class _LoginControllerBase with Store {
         password = user.senha!;
       }
 
-      if (!UtilBrasilFields.isCPFValido(cpf)) {
+      if (!checkCPFService.validateCPF(cpf: cpf)) {
         status = LoginStatus.invalidCPF;
         MeuToast.toast(
             title: 'Ops... :(',
@@ -66,29 +62,29 @@ abstract class _LoginControllerBase with Store {
         "SENHA": password.trim()
       });
 
-      final result = await InternetAddress.lookup(MeuDio.baseUrl);
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        final response = await MeuDio.dio().post(
-          '/login/${Constants.cnpj}/${cpf.replaceAll('.', '').replaceAll('-', '')}',
-          data: authConfig,
+      if (await checkInternetService.haveInternet()) {
+        final response = await http.post(
+          Uri.parse(
+              '${Constants.baseUrl}/login/${Constants.cnpj}/${cpf.replaceAll('.', '').replaceAll('-', '')}'),
+          body: authConfig,
         );
         await Future.delayed(Duration(milliseconds: 600));
         if (response.statusCode == 200) {
           await GlobalSettings().appSetting.setUser(
                 user: UserModel(
-                  nome: jsonDecode(response.data)['nome'],
-                  email: jsonDecode(response.data)['email'],
-                  senha: jsonDecode(response.data)['senha'],
-                  cpf: jsonDecode(response.data)['cpf'],
-                  celular: jsonDecode(response.data)['celular'],
-                  placa: jsonDecode(response.data)['placa'],
-                  uf: jsonDecode(response.data)['uf'],
-                  municipio: jsonDecode(response.data)['municipio'],
-                  rua: jsonDecode(response.data)['rua'],
-                  numero: jsonDecode(response.data)['numero'],
-                  bairro: jsonDecode(response.data)['bairro'],
-                  complemento: jsonDecode(response.data)['complemento'],
-                  cep: jsonDecode(response.data)['cep'],
+                  nome: jsonDecode(response.body)['nome'],
+                  email: jsonDecode(response.body)['email'],
+                  senha: jsonDecode(response.body)['senha'],
+                  cpf: jsonDecode(response.body)['cpf'],
+                  celular: jsonDecode(response.body)['celular'],
+                  placa: jsonDecode(response.body)['placa'],
+                  uf: jsonDecode(response.body)['uf'],
+                  municipio: jsonDecode(response.body)['municipio'],
+                  rua: jsonDecode(response.body)['rua'],
+                  numero: jsonDecode(response.body)['numero'],
+                  bairro: jsonDecode(response.body)['bairro'],
+                  complemento: jsonDecode(response.body)['complemento'],
+                  cep: jsonDecode(response.body)['cep'],
                 ),
               );
           await GlobalSettings().appSetting.setLogado(conectado: 'S');

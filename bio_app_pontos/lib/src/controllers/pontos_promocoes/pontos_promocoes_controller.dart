@@ -1,23 +1,21 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/pontos_promocoes/pontos_promocoes_status.dart';
 import 'package:bio_app_pontos/src/models/promoces.dart';
 import 'package:bio_app_pontos/src/models/saldo.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
-import 'package:bio_app_pontos/src/services/check_internet_service.dart';
-import 'package:bio_app_pontos/src/services/dio.dart';
+import 'package:bio_app_pontos/src/repositories/check_internent_cpf.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:mobx/mobx.dart';
 part 'pontos_promocoes_controller.g.dart';
 
 class PontosPromocoesController = _PontosPromocoesControllerBase
     with _$PontosPromocoesController;
 
-abstract class _PontosPromocoesControllerBase with Store {
-  final checkInternetService = CheckInternetService();
-
+abstract class _PontosPromocoesControllerBase extends CheckInternetCPF
+    with Store {
   @observable
   ObservableList<PromocoesModel> promocoes = ObservableList.of([]);
 
@@ -36,12 +34,13 @@ abstract class _PontosPromocoesControllerBase with Store {
       final UserModel user = GlobalSettings().appSetting.user;
 
       if (await checkInternetService.haveInternet()) {
-        final response = await MeuDio.dio().get(
-          '/getJson/${Constants.cnpj}/pontos/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
+        final response = await http.get(
+          Uri.parse(
+              '${Constants.baseUrl}/getJson/${Constants.cnpj}/pontos/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}'),
         );
         await Future.delayed(Duration(milliseconds: 600));
         if (response.statusCode == 200) {
-          saldo.saldo = jsonDecode(response.data)['saldo'];
+          saldo.saldo = jsonDecode(response.body)['saldo'];
         }
 
         await buscaOfertas();
@@ -62,13 +61,14 @@ abstract class _PontosPromocoesControllerBase with Store {
   @action
   Future<void> buscaOfertas() async {
     promocoes.clear();
-    final responsePromocoes = await MeuDio.dio().get(
-      '/getJson/${Constants.cnpj}/ofertas/ofertas',
+    final responsePromocoes = await http.get(
+      Uri.parse(
+          '${Constants.baseUrl}/getJson/${Constants.cnpj}/ofertas/ofertas'),
     );
 
-    if (responsePromocoes.statusCode == 200 && responsePromocoes.data != "") {
+    if (responsePromocoes.statusCode == 200 && responsePromocoes.body != "") {
       final promocoesApi =
-          jsonDecode(responsePromocoes.data).map<PromocoesModel>((e) {
+          jsonDecode(responsePromocoes.body).map<PromocoesModel>((e) {
         return PromocoesModel(
           descricao: e['descricao'],
           path_image:

@@ -24,6 +24,21 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
     });
   }
 
+  final _$emailAtom = Atom(name: '_ForgotPasswordControllerBase.email');
+
+  @override
+  String get email {
+    _$emailAtom.reportRead();
+    return super.email;
+  }
+
+  @override
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
+      super.email = value;
+    });
+  }
+
   final _$statusAtom = Atom(name: '_ForgotPasswordControllerBase.status');
 
   @override
@@ -52,6 +67,7 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   String toString() {
     return '''
 cpf: ${cpf},
+email: ${email},
 status: ${status}
     ''';
   }
