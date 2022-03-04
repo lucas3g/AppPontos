@@ -6,6 +6,7 @@ import 'package:bio_app_pontos/src/controllers/pontos_promocoes/pontos_promocoes
 import 'package:bio_app_pontos/src/models/promoces.dart';
 import 'package:bio_app_pontos/src/models/saldo.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
+import 'package:bio_app_pontos/src/services/check_internet_service.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:mobx/mobx.dart';
@@ -15,6 +16,8 @@ class PontosPromocoesController = _PontosPromocoesControllerBase
     with _$PontosPromocoesController;
 
 abstract class _PontosPromocoesControllerBase with Store {
+  final checkInternetService = CheckInternetService();
+
   @observable
   ObservableList<PromocoesModel> promocoes = ObservableList.of([]);
 
@@ -32,8 +35,7 @@ abstract class _PontosPromocoesControllerBase with Store {
 
       final UserModel user = GlobalSettings().appSetting.user;
 
-      final result = await InternetAddress.lookup(MeuDio.baseUrl);
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      if (await checkInternetService.haveInternet()) {
         final response = await MeuDio.dio().get(
           '/getJson/${Constants.cnpj}/pontos/${user.cpf!.replaceAll('.', '').replaceAll('-', '')}',
         );

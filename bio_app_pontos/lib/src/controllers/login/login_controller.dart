@@ -5,6 +5,7 @@ import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/login/login_status.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/dashboard_page.dart';
+import 'package:bio_app_pontos/src/services/check_internet_service.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
@@ -18,6 +19,8 @@ part 'login_controller.g.dart';
 class LoginController = _LoginControllerBase with _$LoginController;
 
 abstract class _LoginControllerBase with Store {
+  final checkInternetService = CheckInternetService();
+
   @observable
   late String cpf = '';
 
@@ -48,13 +51,7 @@ abstract class _LoginControllerBase with Store {
         return;
       }
 
-      try {
-        final result = await InternetAddress.lookup(MeuDio.baseUrl);
-        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-          print('Tem Internet');
-        }
-      } on SocketException catch (_) {
-        print('Sem Internet Login');
+      if (!(await checkInternetService.haveInternet())) {
         status = LoginStatus.semInternet;
         MeuToast.toast(
             title: 'Ops... :(',

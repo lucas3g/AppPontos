@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/controllers/forgot_password/forgot_password_status.dart';
+import 'package:bio_app_pontos/src/services/check_internet_service.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
@@ -14,6 +15,8 @@ class ForgotPasswordController = _ForgotPasswordControllerBase
     with _$ForgotPasswordController;
 
 abstract class _ForgotPasswordControllerBase with Store {
+  final checkInternetService = CheckInternetService();
+
   @observable
   String cpf = '';
   String email = '';
@@ -26,6 +29,17 @@ abstract class _ForgotPasswordControllerBase with Store {
   Future<void> sendEmailPassword({required BuildContext context}) async {
     try {
       status = ForgotPasswordStatus.loading;
+
+      if (!(await checkInternetService.haveInternet())) {
+        status = ForgotPasswordStatus.empty;
+        MeuToast.toast(
+            title: 'Ops... :(',
+            message: 'Parece que você está sem Internet',
+            type: TypeToast.noNet,
+            context: context);
+        return;
+      }
+
       final controllerCpf = GlobalSettings().registerController;
 
       if (await controllerCpf.verificaCPFCadastrado(cpf: cpf)) {

@@ -6,6 +6,7 @@ import 'package:bio_app_pontos/src/controllers/login/login_controller.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_status_cep.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
+import 'package:bio_app_pontos/src/services/check_internet_service.dart';
 import 'package:bio_app_pontos/src/services/dio.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
@@ -19,6 +20,7 @@ class RegisterController = _RegisterControllerBase with _$RegisterController;
 
 abstract class _RegisterControllerBase with Store {
   final loginController = LoginController();
+  final checkInternetService = CheckInternetService();
 
   @observable
   UserModel user = UserModel();
@@ -80,8 +82,8 @@ abstract class _RegisterControllerBase with Store {
     try {
       status = RegisterStatus.loading;
       await Future.delayed(Duration(seconds: 1));
-      final result = await InternetAddress.lookup(MeuDio.baseUrl);
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+
+      if (await checkInternetService.haveInternet()) {
         if (await verificaCPFCadastrado()) {
           status = RegisterStatus.cnpjJaCadastrado;
           return false;
@@ -133,105 +135,115 @@ abstract class _RegisterControllerBase with Store {
   @action
   Future<List<String>> buscaCEP(
       {required String cep, required BuildContext cxt}) async {
-    statusCep = RegisterStatusCep.loading;
-
     try {
-      final List<String> lista = [];
-      final cepSemCaracter = cep.replaceAll('.', '').replaceAll('-', '');
-      final response = await http.get(
-        Uri.parse('https://viacep.com.br/ws/$cepSemCaracter/json/'),
-      );
+      statusCep = RegisterStatusCep.loading;
+      if (!(await checkInternetService.haveInternet())) {
+        statusCep = RegisterStatusCep.empty;
+        MeuToast.toast(
+          title: 'Ops... :(',
+          message: 'Parece que você está sem Internet',
+          type: TypeToast.noNet,
+          context: cxt,
+        );
+        return [];
+      } else {
+        final List<String> lista = [];
+        final cepSemCaracter = cep.replaceAll('.', '').replaceAll('-', '');
+        final response = await http.get(
+          Uri.parse('https://viacep.com.br/ws/$cepSemCaracter/json/'),
+        );
 
-      switch (jsonDecode(response.body)['uf']) {
-        case 'AC':
-          lista.add('Acre');
-          break;
-        case 'AL':
-          lista.add('Alagoas');
-          break;
-        case 'AP':
-          lista.add('Amapá');
-          break;
-        case 'AM':
-          lista.add('Amazonas');
-          break;
-        case 'BA':
-          lista.add('Bahia');
-          break;
-        case 'CE':
-          lista.add('Ceará');
-          break;
-        case 'ES':
-          lista.add('Espírito Santo');
-          break;
-        case 'GO':
-          lista.add('Goiás');
-          break;
-        case 'MA':
-          lista.add('Maranhão');
-          break;
-        case 'MT':
-          lista.add('Mato Grosso');
-          break;
-        case 'MS':
-          lista.add('Mato Grosso do Sul');
-          break;
-        case 'MG':
-          lista.add('Minas Gerais');
-          break;
-        case 'PA':
-          lista.add('Pará');
-          break;
-        case 'PB':
-          lista.add('Paraíba');
-          break;
-        case 'PR':
-          lista.add('Paraná');
-          break;
-        case 'PE':
-          lista.add('Pernambuco');
-          break;
-        case 'PI':
-          lista.add('Piauí');
-          break;
-        case 'RJ':
-          lista.add('Rio de Janeiro');
-          break;
-        case 'RN':
-          lista.add('Rio Grande do Norte');
-          break;
-        case 'RS':
-          lista.add('Rio Grande do Sul');
-          break;
-        case 'RO':
-          lista.add('Rondônia');
-          break;
-        case 'RR':
-          lista.add('Roraima');
-          break;
-        case 'SC':
-          lista.add('Santa Catarina');
-          break;
-        case 'SP':
-          lista.add('São Paulo');
-          break;
-        case 'SE':
-          lista.add('Sergipe');
-          break;
-        case 'TO':
-          lista.add('Tocantins');
-          break;
-        case 'DF':
-          lista.add('Distrito Federal');
-          break;
-        default:
+        switch (jsonDecode(response.body)['uf']) {
+          case 'AC':
+            lista.add('Acre');
+            break;
+          case 'AL':
+            lista.add('Alagoas');
+            break;
+          case 'AP':
+            lista.add('Amapá');
+            break;
+          case 'AM':
+            lista.add('Amazonas');
+            break;
+          case 'BA':
+            lista.add('Bahia');
+            break;
+          case 'CE':
+            lista.add('Ceará');
+            break;
+          case 'ES':
+            lista.add('Espírito Santo');
+            break;
+          case 'GO':
+            lista.add('Goiás');
+            break;
+          case 'MA':
+            lista.add('Maranhão');
+            break;
+          case 'MT':
+            lista.add('Mato Grosso');
+            break;
+          case 'MS':
+            lista.add('Mato Grosso do Sul');
+            break;
+          case 'MG':
+            lista.add('Minas Gerais');
+            break;
+          case 'PA':
+            lista.add('Pará');
+            break;
+          case 'PB':
+            lista.add('Paraíba');
+            break;
+          case 'PR':
+            lista.add('Paraná');
+            break;
+          case 'PE':
+            lista.add('Pernambuco');
+            break;
+          case 'PI':
+            lista.add('Piauí');
+            break;
+          case 'RJ':
+            lista.add('Rio de Janeiro');
+            break;
+          case 'RN':
+            lista.add('Rio Grande do Norte');
+            break;
+          case 'RS':
+            lista.add('Rio Grande do Sul');
+            break;
+          case 'RO':
+            lista.add('Rondônia');
+            break;
+          case 'RR':
+            lista.add('Roraima');
+            break;
+          case 'SC':
+            lista.add('Santa Catarina');
+            break;
+          case 'SP':
+            lista.add('São Paulo');
+            break;
+          case 'SE':
+            lista.add('Sergipe');
+            break;
+          case 'TO':
+            lista.add('Tocantins');
+            break;
+          case 'DF':
+            lista.add('Distrito Federal');
+            break;
+          default:
+        }
+
+        lista.add(jsonDecode(response.body)['localidade']);
+
+        statusCep = RegisterStatusCep.success;
+
+        return lista;
       }
-
-      lista.add(jsonDecode(response.body)['localidade']);
-
-      statusCep = RegisterStatusCep.success;
-
-      return lista;
     } catch (e) {
       statusCep = RegisterStatusCep.error;
       MeuToast.toast(
