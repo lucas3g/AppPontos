@@ -17,9 +17,6 @@ class _ConfigPageState extends State<ConfigPage> {
   final controller = GlobalSettings().appSetting;
   final loginController = GlobalSettings().loginController;
 
-  final text =
-      "De toda a equipe da Abastecedora Bio Wahl agradecemos por usar o aplicativo Bio Wahl - Cashback.";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +28,7 @@ class _ConfigPageState extends State<ConfigPage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              text,
+              Constants.textoSairApp,
               style: AppTheme.textStyles.textoSairApp,
               textAlign: TextAlign.center,
             ),

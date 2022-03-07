@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:bio_app_pontos/src/models/email.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
+import 'package:mobx/mobx.dart';
+
 import 'package:bio_app_pontos/src/controllers/forgot_password/forgot_password_status.dart';
 import 'package:bio_app_pontos/src/repositories/check_internent_cpf.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/meu_toast.dart';
 import 'package:bio_app_pontos/src/utils/types_toast.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:mobx/mobx.dart';
-import 'package:http/http.dart' as http;
+
 part 'forgot_password_controller.g.dart';
 
 class ForgotPasswordController = _ForgotPasswordControllerBase
@@ -39,10 +42,12 @@ abstract class _ForgotPasswordControllerBase extends CheckInternetCPF
       }
 
       try {
+        EmailJson emailJson = EmailJson(r_nome: Constants.tituloEmail);
         final response = await http.post(
-            Uri.parse(
-                '${Constants.baseUrl}/EnviarEmail/${Constants.cnpj}/${cpf.replaceAll('.', '').replaceAll('-', '').trim()}'),
-            headers: {'r_nome': 'Bio Wahl Abastecedora'});
+          Uri.parse(
+              '${Constants.baseUrl}/EnviarEmail/${Constants.cnpj}/${cpf.replaceAll('.', '').replaceAll('-', '').trim()}'),
+          body: emailJson.toJson(),
+        );
 
         switch (jsonDecode(response.body)['status']) {
           case '200':

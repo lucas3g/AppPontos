@@ -7,11 +7,14 @@ class Constants {
   static final String nomeApp = 'Bio Wahl - Cashback';
   static final String baseUrlGoogle = 'google.com';
   static final String baseUrl =
-      'https://elinfo2.jelastic.saveincloud.net/AppCashBack/';
+      'https://elinfo2.jelastic.saveincloud.net/AppCashBack';
   static final double latitude = -27.9512195; // BIO - -27.9512195
   static final double longitude = -52.9238309; // BIO - -52.9238309
   static final String tituloMarker = 'Bio Wahl Abastecedora';
-  static final String idMarker = 'biowahl'; //
+  static final String idMarker = 'biowahl';
+  static final String tituloEmail = 'Bio Wahl Abastecedora';
+  static final String textoSairApp =
+      "De toda a equipe da Abastecedora Bio Wahl, agradecemos por usar o aplicativo Bio Wahl - Cashback.";
 }
 
 extension ContextExtensions on BuildContext {

@@ -142,6 +142,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                       hintText: 'CEP',
                       campoVazio: 'Digite seu CEP',
                       onFieldSubmitted: (value) async {
+                        rua.requestFocus();
                         final lista = await controller.buscaCEP(
                             cep: controllerCep.text, cxt: context);
                         setState(() {
@@ -157,7 +158,6 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                           uf: lista[0],
                         );
                         filteredMunicipios = municipios;
-                        estado.requestFocus();
                       },
                       onChanged: (String? cep) {
                         controller.copyWith(cep: cep);
@@ -168,6 +168,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                   Observer(builder: (_) {
                     return ElevatedButton(
                         onPressed: () async {
+                          rua.requestFocus();
                           final lista = await controller.buscaCEP(
                               cep: controllerCep.text, cxt: context);
                           setState(() {
@@ -213,6 +214,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               Column(
                 children: [
                   TextFormField(
+                    focusNode: estado,
                     onTap: () {
                       setState(() {
                         onTappedEstado = !onTappedEstado;
@@ -270,7 +272,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                                   itemBuilder: (_, int index) {
                                     return ListTile(
                                       onTap: () async {
-                                        onTappedEstado = !onTappedEstado;
+                                        onTappedEstado = false;
                                         controllerEstado.text =
                                             filteredEstados[index];
                                         municipios =
@@ -279,6 +281,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                                         );
                                         filteredMunicipios = municipios;
                                         controllerMunicipio.text = '';
+                                        municipio.requestFocus();
                                         setState(() {});
                                       },
                                       title: Text(filteredEstados[index]),
@@ -310,12 +313,18 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               Column(
                 children: [
                   TextFormField(
+                    focusNode: municipio,
                     onTap: () {
                       setState(() {
                         onTappedMun = !onTappedMun;
                       });
                     },
                     onChanged: (value) {
+                      if (!onTappedMun) {
+                        setState(() {
+                          onTappedMun = true;
+                        });
+                      }
                       filtraMunicipios(value);
                     },
                     controller: controllerMunicipio,
@@ -366,6 +375,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                                         controllerMunicipio.text =
                                             filteredMunicipios[index];
                                         onTappedMun = !onTappedMun;
+                                        rua.requestFocus();
                                         setState(() {});
                                       },
                                       title: Text(filteredMunicipios[index]),
