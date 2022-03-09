@@ -52,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
         title = 'Endereço';
         break;
       case 2:
-        title = 'Dados de acesso';
+        title = 'E-Mail e Senha';
         break;
       default:
         title = 'Dados Pessoais';
@@ -66,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
     autorun((_) async {
       if (controller.status == RegisterStatus.cnpjJaCadastrado) {
         MeuToast.toast(
-          title: 'Ops... :(',
+          title: 'Atenção',
           message: 'CPF já cadastrado.',
           type: TypeToast.dadosInv,
           context: context,
@@ -190,31 +190,39 @@ class _RegisterPageState extends State<RegisterPage> {
                     : context.screenWidth * 0.50,
                 height: 60,
                 child: TextButton(
-                  onPressed: () async {
-                    if (currentPage < 2) {
-                      if (controller.keyNome.currentState != null) {
-                        if (!controller.keyNome.currentState!.validate() ||
-                            !controller.keyCpf.currentState!.validate() ||
-                            !controller.keyCelular.currentState!.validate() ||
-                            !controller.keyPlaca.currentState!.validate()) {
-                          return;
+                  onPressed: controller.status != RegisterStatus.loading
+                      ? () async {
+                          if (currentPage < 2) {
+                            if (controller.keyNome.currentState != null) {
+                              if (!controller.keyNome.currentState!
+                                      .validate() ||
+                                  !controller.keyCpf.currentState!.validate() ||
+                                  !controller.keyCelular.currentState!
+                                      .validate() ||
+                                  !controller.keyPlaca.currentState!
+                                      .validate()) {
+                                return;
+                              }
+                            }
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            await nextPage();
+                          } else {
+                            if (controller.keyEmail.currentState != null) {
+                              if (!controller.keyEmail.currentState!
+                                      .validate() ||
+                                  !controller.keySenha.currentState!
+                                      .validate()) {
+                                return;
+                              }
+                            }
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            if (await controller.registerUser(
+                                context: context)) {
+                              controller.user = UserModel();
+                            }
+                          }
                         }
-                      }
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      await nextPage();
-                    } else {
-                      if (controller.keyEmail.currentState != null) {
-                        if (!controller.keyEmail.currentState!.validate() ||
-                            !controller.keySenha.currentState!.validate()) {
-                          return;
-                        }
-                      }
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      if (await controller.registerUser(context: context)) {
-                        controller.user = UserModel();
-                      }
-                    }
-                  },
+                      : null,
                   child: controller.status == RegisterStatus.success
                       ? AnimatedOpacity(
                           duration: Duration(milliseconds: 500),

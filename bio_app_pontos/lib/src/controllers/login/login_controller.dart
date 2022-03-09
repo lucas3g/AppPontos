@@ -40,7 +40,7 @@ abstract class _LoginControllerBase extends CheckInternetCPF with Store {
       if (!checkCPFService.validateCPF(cpf: cpf)) {
         status = LoginStatus.invalidCPF;
         MeuToast.toast(
-            title: 'Ops... :(',
+            title: 'Atenção',
             message: 'Você digitou um CPF inválido.',
             type: TypeToast.dadosInv,
             context: context);
@@ -50,7 +50,7 @@ abstract class _LoginControllerBase extends CheckInternetCPF with Store {
       if (!(await checkInternetService.haveInternet())) {
         status = LoginStatus.semInternet;
         MeuToast.toast(
-            title: 'Ops... :(',
+            title: 'Atenção',
             message: 'Parece que você está sem Internet',
             type: TypeToast.noNet,
             context: context);
@@ -106,7 +106,7 @@ abstract class _LoginControllerBase extends CheckInternetCPF with Store {
         } else {
           status = LoginStatus.error;
           MeuToast.toast(
-              title: 'Ops... :(',
+              title: 'Atenção',
               message: 'Não Foi Possivel Fazer Login.Verifique seus Dados.',
               type: TypeToast.error,
               context: context);
@@ -116,7 +116,7 @@ abstract class _LoginControllerBase extends CheckInternetCPF with Store {
       print('EU SOU O ERRO DE LOGIN $e');
       status = LoginStatus.error;
       MeuToast.toast(
-          title: 'Ops... :(',
+          title: 'Atenção',
           message: 'Não Foi Possivel Fazer Login.Verifique seus Dados.',
           type: TypeToast.error,
           context: context);

@@ -100,7 +100,7 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
           return true;
         } else {
           MeuToast.toast(
-            title: 'Ops...',
+            title: 'Atenção',
             message:
                 'Não foi possível concluir o seu cadastro, por favor tente novamente.',
             type: TypeToast.error,
@@ -111,7 +111,7 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
         }
       } else {
         MeuToast.toast(
-          title: 'Ops...',
+          title: 'Atenção',
           message: 'Parece que você esta sem internet, por favor verifique.',
           type: TypeToast.noNet,
           context: context,
@@ -120,7 +120,7 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
       }
     } catch (e) {
       MeuToast.toast(
-        title: 'Ops...',
+        title: 'Atenção',
         message:
             'Não foi possível concluir o seu cadastro, por favor tente novamente.',
         type: TypeToast.error,
@@ -139,7 +139,7 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
       if (!(await checkInternetService.haveInternet())) {
         statusCep = RegisterStatusCep.empty;
         MeuToast.toast(
-          title: 'Ops... :(',
+          title: 'Atenção',
           message: 'Parece que você está sem Internet',
           type: TypeToast.noNet,
           context: cxt,
@@ -246,7 +246,7 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
     } catch (e) {
       statusCep = RegisterStatusCep.error;
       MeuToast.toast(
-          title: 'Ops..',
+          title: 'Atenção',
           message: 'CEP não encontrado.',
           type: TypeToast.error,
           context: cxt);

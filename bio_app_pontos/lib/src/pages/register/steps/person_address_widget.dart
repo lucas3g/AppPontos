@@ -221,11 +221,17 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                       });
                     },
                     onChanged: (value) {
+                      if (!onTappedEstado) {
+                        setState(() {
+                          onTappedEstado = true;
+                        });
+                      }
                       filtraEstados(value);
                       if (value.isEmpty) {
                         filteredMunicipios = [];
                         controllerMunicipio.text = '';
                       }
+                      controller.copyWith(uf: value);
                     },
                     controller: controllerEstado,
                     decoration: InputDecoration(
@@ -272,17 +278,21 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                                   itemBuilder: (_, int index) {
                                     return ListTile(
                                       onTap: () async {
-                                        onTappedEstado = false;
+                                        setState(() {
+                                          onTappedEstado = !onTappedEstado;
+                                        });
                                         controllerEstado.text =
                                             filteredEstados[index];
-                                        municipios =
-                                            await controller.buscaMunicipios(
-                                          uf: filteredEstados[index],
-                                        );
+                                        controller.copyWith(
+                                            uf: filteredEstados[index]);
                                         filteredMunicipios = municipios;
                                         controllerMunicipio.text = '';
                                         municipio.requestFocus();
                                         setState(() {});
+                                        municipios =
+                                            await controller.buscaMunicipios(
+                                          uf: filteredEstados[index],
+                                        );
                                       },
                                       title: Text(filteredEstados[index]),
                                     );
@@ -326,6 +336,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                         });
                       }
                       filtraMunicipios(value);
+                      controller.copyWith(municipio: value);
                     },
                     controller: controllerMunicipio,
                     decoration: InputDecoration(
@@ -374,6 +385,9 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                                       onTap: () {
                                         controllerMunicipio.text =
                                             filteredMunicipios[index];
+                                        controller.copyWith(
+                                            municipio:
+                                                filteredMunicipios[index]);
                                         onTappedMun = !onTappedMun;
                                         rua.requestFocus();
                                         setState(() {});

@@ -36,7 +36,11 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         flexibleSpace: Container(
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.only(
+              top: Constants.nomeApp == 'Bio Wahl - Cashback' ? 30 : 50,
+              bottom: 30,
+              left: 30,
+              right: 30),
           child: Image.asset(
             context.image_path,
           ),

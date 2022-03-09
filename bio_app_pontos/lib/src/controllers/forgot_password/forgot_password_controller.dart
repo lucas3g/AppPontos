@@ -34,7 +34,7 @@ abstract class _ForgotPasswordControllerBase extends CheckInternetCPF
       if (!(await checkInternetService.haveInternet())) {
         status = ForgotPasswordStatus.empty;
         MeuToast.toast(
-            title: 'Ops... :(',
+            title: 'Atenção',
             message: 'Parece que você está sem Internet',
             type: TypeToast.noNet,
             context: context);
@@ -63,7 +63,7 @@ abstract class _ForgotPasswordControllerBase extends CheckInternetCPF
             break;
           case '199':
             MeuToast.toast(
-              title: 'Ops...',
+              title: 'Atenção',
               message:
                   'Não foi possível enviar o email. Tente novamente mais tarde.',
               type: TypeToast.error,
@@ -73,7 +73,7 @@ abstract class _ForgotPasswordControllerBase extends CheckInternetCPF
             break;
           case '198':
             MeuToast.toast(
-              title: 'Ops...',
+              title: 'Atenção',
               message: 'CPF não cadastrado. Verifique o CPF digitado.',
               type: TypeToast.dadosInv,
               context: context,

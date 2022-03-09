@@ -20,5 +20,5 @@ class Constants {
 extension ContextExtensions on BuildContext {
   double get screenHeight => MediaQuery.of(this).size.height;
   double get screenWidth => MediaQuery.of(this).size.width;
-  String get image_path => 'assets/images/logo.png';
+  String get image_path => 'assets/images/bio.png';
 }
