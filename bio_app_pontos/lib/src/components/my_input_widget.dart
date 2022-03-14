@@ -49,6 +49,7 @@ class _MyInputWidgetState extends State<MyInputWidget> {
           ? widget.autovalidateMode
           : AutovalidateMode.disabled,
       child: TextFormField(
+        
         textCapitalization: widget.textCapitalization,
         validator: (value) {
           if (value == null || value.isEmpty) {

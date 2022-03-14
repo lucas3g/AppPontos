@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.el_sistemas.bio_app_pontos">
+    package="com.elsistemas.bioapppontos">
 
         <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

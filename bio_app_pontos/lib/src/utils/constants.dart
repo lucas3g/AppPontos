@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class Constants {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
-  static final String cnpj = '01459027';
+  static final String cnpj = '20754224';
   static final String nomeApp = 'Bio Wahl - Cashback';
   static final String baseUrlGoogle = 'google.com';
   static final String baseUrl =
@@ -14,7 +14,7 @@ class Constants {
   static final String idMarker = 'biowahl';
   static final String tituloEmail = 'Bio Wahl Abastecedora';
   static final String textoSairApp =
-      "De toda a equipe da Abastecedora Bio Wahl, agradecemos por usar o aplicativo Bio Wahl - Cashback.";
+      "De toda a equipe da Abastecedora BioWahl, agradecemos por usar o aplicativo BioWahl - Cashback.";
 }
 
 extension ContextExtensions on BuildContext {

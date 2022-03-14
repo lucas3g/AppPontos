@@ -1,4 +1,4 @@
-package com.el_sistemas.bio_app_pontos
+package com.elsistemas.bioapppontos
 
 import io.flutter.embedding.android.FlutterActivity
 

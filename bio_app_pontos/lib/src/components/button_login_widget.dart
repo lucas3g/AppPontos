@@ -34,113 +34,79 @@ class _ButtonLoginWidgetState extends State<ButtonLoginWidget> {
       },
       child: Observer(builder: (context) {
         return AnimatedContainer(
-            alignment: Alignment.center,
-            height: 40,
-            width: widget.controller.status == LoginStatus.empty ||
-                    widget.controller.status == LoginStatus.error ||
-                    widget.controller.status == LoginStatus.invalidCPF ||
-                    widget.controller.status == LoginStatus.semInternet
-                ? context.screenWidth
-                : 40,
-            duration: Duration(milliseconds: 500),
-            decoration: BoxDecoration(
-                color: widget.controller.status == LoginStatus.success
-                    ? Colors.green
-                    : AppTheme.colors.primary,
-                borderRadius: BorderRadius.circular(widget.controller.status ==
-                            LoginStatus.empty ||
-                        widget.controller.status == LoginStatus.error ||
-                        widget.controller.status == LoginStatus.invalidCPF ||
-                        widget.controller.status == LoginStatus.semInternet
-                    ? 10
-                    : 50),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 5,
-                    color: widget.controller.status == LoginStatus.success
-                        ? Colors.green
-                        : AppTheme.colors.primary,
-                    offset: Offset(0, 5),
-                  )
-                ]),
-            child: Stack(
-              children: [
-                AnimatedOpacity(
-                  duration: Duration(milliseconds: 500),
-                  opacity: widget.controller.status == LoginStatus.empty ||
+          alignment: Alignment.center,
+          height: 40,
+          width: widget.controller.status == LoginStatus.empty ||
+                  widget.controller.status == LoginStatus.error ||
+                  widget.controller.status == LoginStatus.invalidCPF ||
+                  widget.controller.status == LoginStatus.semInternet
+              ? context.screenWidth
+              : 40,
+          duration: Duration(milliseconds: 500),
+          decoration: BoxDecoration(
+              color: widget.controller.status == LoginStatus.success
+                  ? Colors.green
+                  : AppTheme.colors.primary,
+              borderRadius: BorderRadius.circular(
+                  widget.controller.status == LoginStatus.empty ||
                           widget.controller.status == LoginStatus.error ||
                           widget.controller.status == LoginStatus.invalidCPF ||
                           widget.controller.status == LoginStatus.semInternet
-                      ? 1
-                      : 0,
-                  child: Center(
-                    child: FittedBox(
-                      child: Text(
-                        'Entrar',
-                        style:
-                            AppTheme.textStyles.button.copyWith(fontSize: 16),
-                      ),
+                      ? 10
+                      : 50),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: widget.controller.status == LoginStatus.success
+                      ? Colors.green
+                      : AppTheme.colors.primary,
+                  offset: Offset(0, 5),
+                )
+              ]),
+          child: Stack(
+            children: [
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 500),
+                opacity: widget.controller.status == LoginStatus.empty ||
+                        widget.controller.status == LoginStatus.error ||
+                        widget.controller.status == LoginStatus.invalidCPF ||
+                        widget.controller.status == LoginStatus.semInternet
+                    ? 1
+                    : 0,
+                child: Center(
+                  child: FittedBox(
+                    child: Text(
+                      'Entrar',
+                      style: AppTheme.textStyles.button.copyWith(fontSize: 16),
                     ),
                   ),
                 ),
-                AnimatedOpacity(
-                  duration: Duration(milliseconds: 500),
-                  opacity: widget.controller.status == LoginStatus.loading ||
-                          widget.controller.status == LoginStatus.success
-                      ? 1
-                      : 0,
-                  child: Center(
-                    child: Container(
-                      height: 25,
-                      width: 25,
-                      child: widget.controller.status == LoginStatus.success
-                          ? Icon(
-                              Icons.check_rounded,
-                              color: Colors.white,
-                              size: 25,
-                            )
-                          : CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                    ),
+              ),
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 500),
+                opacity: widget.controller.status == LoginStatus.loading ||
+                        widget.controller.status == LoginStatus.success
+                    ? 1
+                    : 0,
+                child: Center(
+                  child: Container(
+                    height: 25,
+                    width: 25,
+                    child: widget.controller.status == LoginStatus.success
+                        ? Icon(
+                            Icons.check_rounded,
+                            color: Colors.white,
+                            size: 25,
+                          )
+                        : CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
                   ),
                 ),
-              ],
-            )
-            //AnimatedCrossFade(
-            //   alignment: Alignment.center,
-            //   crossFadeState: widget.controller.status == LoginStatus.empty ||
-            //           widget.controller.status == LoginStatus.error ||
-            //           widget.controller.status == LoginStatus.invalidCPF ||
-            //           widget.controller.status == LoginStatus.semInternet
-            //       ? CrossFadeState.showFirst
-            //       : CrossFadeState.showSecond,
-            //   duration: Duration(milliseconds: 500),
-            //   firstChild: Center(
-            //     child: FittedBox(
-            //       child: Text(
-            //         'Entrar',
-            //         style: AppTheme.textStyles.button.copyWith(fontSize: 16),
-            //       ),
-            //     ),
-            //   ),
-            // secondChild: Center(
-            //   child: Container(
-            //     height: 25,
-            //     width: 25,
-            //     child: widget.controller.status == LoginStatus.success
-            //         ? Icon(
-            //             Icons.check_rounded,
-            //             color: Colors.white,
-            //             size: 25,
-            //           )
-            //         : CircularProgressIndicator(
-            //             color: Colors.white,
-            //           ),
-            //   ),
-            // ),
-            // ),
-            );
+              ),
+            ],
+          ),
+        );
       }),
     );
   }
