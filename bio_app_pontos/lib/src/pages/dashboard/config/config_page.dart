@@ -45,25 +45,33 @@ class _ConfigPageState extends State<ConfigPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              Constants.textoSairApp,
-              style: AppTheme.textStyles.textoSairApp,
-              textAlign: TextAlign.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    Constants.textoSairApp,
+                    style: AppTheme.textStyles.textoSairApp,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
             SlideAction(
               animationDuration: Duration(milliseconds: 500),
               borderRadius: 10,
               height: 50,
               sliderButtonIconPadding: 10,
-              outerColor: Colors.grey.shade400,
-              elevation: 0,
+              outerColor: Colors.white,
+              elevation: 5,
               innerColor: AppTheme.colors.primary,
               sliderButtonIcon: Icon(
                 Icons.arrow_forward_rounded,
                 color: Colors.white,
               ),
               text: 'Arraste para sair do app',
-              textStyle: AppTheme.textStyles.button.copyWith(fontSize: 16),
+              textStyle: AppTheme.textStyles.button
+                  .copyWith(fontSize: 16, color: AppTheme.colors.primary),
               onSubmit: sairdoApp,
               submittedIcon: Icon(
                 Icons.check_rounded,

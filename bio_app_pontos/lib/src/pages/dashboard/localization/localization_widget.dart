@@ -42,6 +42,7 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
                 zoomControlsEnabled: false,
                 markers: mapsController.markerPosto,
                 mapToolbarEnabled: false,
+                myLocationButtonEnabled: false,
                 onMapCreated: (GoogleMapController controller) {
                   controllerGoogle.complete(controller);
                 },
