@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class Constants {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
-  static final String cnpj = '20754224';
+  static final String cnpj = '20754224'; //20754224 - BIO
   static final String nomeApp = 'Bio Wahl - Cashback';
   static final String baseUrlGoogle = 'google.com';
   static final String baseUrl =

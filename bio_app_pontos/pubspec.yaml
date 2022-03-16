@@ -54,6 +54,8 @@ dependencies:
   firebase_core: ^1.12.0
   firebase_messaging: ^11.2.6
   dio: ^4.0.4
+  lottie: ^1.2.2
+  slide_to_act: ^2.0.1
 
 flutter_app_name:
   name: "Bio Wahl - Cashback"
