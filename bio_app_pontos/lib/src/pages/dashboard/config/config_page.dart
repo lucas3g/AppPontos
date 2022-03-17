@@ -4,7 +4,6 @@ import 'package:bio_app_pontos/src/pages/login/login_page.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 

@@ -48,92 +48,122 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(),
-            Column(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: context.screenHeight * 0.75,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MyInputWidget(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.number,
-                  formKey: keyCPF,
-                  textEditingController: cpfController,
-                  focusNode: cpf,
-                  hintText: 'CPF',
-                  campoVazio: 'Digite seu CPF',
-                  onFieldSubmitted: (value) {
-                    password.requestFocus();
-                  },
-                  onChanged: (String? cpf) {
-                    controller.cpf = cpf!;
-                  },
-                  inputFormaters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    CpfInputFormatter(),
+                Spacer(),
+                Column(
+                  children: [
+                    MyInputWidget(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.number,
+                      formKey: keyCPF,
+                      textEditingController: cpfController,
+                      focusNode: cpf,
+                      hintText: 'CPF',
+                      campoVazio: 'Digite seu CPF',
+                      onFieldSubmitted: (value) {
+                        password.requestFocus();
+                      },
+                      onChanged: (String? cpf) {
+                        controller.cpf = cpf!;
+                      },
+                      inputFormaters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CpfInputFormatter(),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    MyInputWidget(
+                      textCapitalization: TextCapitalization.none,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      formKey: keySenha,
+                      textEditingController: senhaController,
+                      focusNode: password,
+                      obscureText: !visiblePassword,
+                      hintText: 'Senha',
+                      campoVazio: 'Digite sua Senha',
+                      suffixIcon: GestureDetector(
+                        child: Icon(
+                          visiblePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          size: 25,
+                          color: visiblePassword
+                              ? AppTheme.colors.primary
+                              : Color(0xFF666666),
+                        ),
+                        onTap: () {
+                          visiblePassword = !visiblePassword;
+                          setState(() {});
+                        },
+                      ),
+                      onFieldSubmitted: (value) async {
+                        if (!keyCPF.currentState!.validate() ||
+                            !keySenha.currentState!.validate()) {
+                          return;
+                        }
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        await controller.acessarApp(context: context);
+                      },
+                      onChanged: (String? password) {
+                        controller.password = password!;
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    ButtonLoginWidget(
+                      keySenha: keySenha,
+                      keyCPF: keyCPF,
+                      controller: controller,
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Esqueceu sua senha?',
+                        ),
+                        TextButton(
+                          child: Text('Clique aqui'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                child: ForgotPassword(),
+                                type: PageTransitionType.rightToLeftWithFade,
+                                duration: Duration(milliseconds: 500),
+                                reverseDuration: Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                                alignment: Alignment.center,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(height: 10),
-                MyInputWidget(
-                  textCapitalization: TextCapitalization.none,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  formKey: keySenha,
-                  textEditingController: senhaController,
-                  focusNode: password,
-                  obscureText: !visiblePassword,
-                  hintText: 'Senha',
-                  campoVazio: 'Digite sua Senha',
-                  suffixIcon: GestureDetector(
-                    child: Icon(
-                      visiblePassword ? Icons.visibility : Icons.visibility_off,
-                      size: 25,
-                      color: visiblePassword
-                          ? AppTheme.colors.primary
-                          : Color(0xFF666666),
-                    ),
-                    onTap: () {
-                      visiblePassword = !visiblePassword;
-                      setState(() {});
-                    },
-                  ),
-                  onFieldSubmitted: (value) async {
-                    if (!keyCPF.currentState!.validate() ||
-                        !keySenha.currentState!.validate()) {
-                      return;
-                    }
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    await controller.acessarApp(context: context);
-                  },
-                  onChanged: (String? password) {
-                    controller.password = password!;
-                  },
-                ),
-                SizedBox(height: 15),
-                ButtonLoginWidget(
-                  keySenha: keySenha,
-                  keyCPF: keyCPF,
-                  controller: controller,
-                ),
-                SizedBox(height: 10),
+                Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Esqueceu sua senha?',
-                    ),
+                    Text('Não tem uma conta ainda?'),
                     TextButton(
-                      child: Text('Clique aqui'),
+                      child: Text('Criar conta'),
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           PageTransition(
-                            child: ForgotPassword(),
+                            child: RegisterPage(),
                             type: PageTransitionType.rightToLeftWithFade,
                             duration: Duration(milliseconds: 500),
-                            reverseDuration: Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
                             alignment: Alignment.center,
                           ),
+                          (route) => false,
                         );
                       },
                     ),
@@ -141,29 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Não tem uma conta ainda?'),
-                TextButton(
-                  child: Text('Criar conta'),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      PageTransition(
-                        child: RegisterPage(),
-                        type: PageTransitionType.rightToLeftWithFade,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                        alignment: Alignment.center,
-                      ),
-                      (route) => false,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

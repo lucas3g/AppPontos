@@ -117,28 +117,32 @@ class _PontosWidgetState extends State<PontosWidget> {
                                 ),
                               )
                             : controller.status == PontosPromocoesStatus.loading
-                                ? Center(
-                                    child: Wrap(
-                                      children: [
-                                        LoadingWidget(
-                                            size: Size(140, 150), radius: 10),
-                                        SizedBox(width: 10),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: LoadingWidget(
+                                ? SingleChildScrollView(
+                                    child: Center(
+                                      child: Wrap(
+                                        children: [
+                                          LoadingWidget(
                                               size: Size(140, 150), radius: 10),
-                                        ),
-                                        LoadingWidget(
-                                            size: Size(140, 150), radius: 10),
-                                        SizedBox(width: 10),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: LoadingWidget(
+                                          SizedBox(width: 10),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: LoadingWidget(
+                                                size: Size(140, 150),
+                                                radius: 10),
+                                          ),
+                                          LoadingWidget(
                                               size: Size(140, 150), radius: 10),
-                                        ),
-                                      ],
+                                          SizedBox(width: 10),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: LoadingWidget(
+                                                size: Size(140, 150),
+                                                radius: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   )
                                 : Container(
