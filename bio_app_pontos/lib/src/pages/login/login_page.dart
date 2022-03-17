@@ -20,6 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final cpfController = TextEditingController();
   final senhaController = TextEditingController();
+  final scrollController = ScrollController();
   final controller = GlobalSettings().loginController;
   late bool visiblePassword = false;
   FocusNode cpf = FocusNode();
@@ -49,8 +50,9 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
+          controller: scrollController,
           child: SizedBox(
-            height: context.screenHeight * 0.75,
+            height: context.screenHeight * 0.77,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -58,6 +60,13 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: [
                     MyInputWidget(
+                      onTap: () {
+                        scrollController.animateTo(
+                          0,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.fastOutSlowIn,
+                        );
+                      },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.number,
                       formKey: keyCPF,
@@ -78,6 +87,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 10),
                     MyInputWidget(
+                      onTap: () {
+                        scrollController.animateTo(
+                          50,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.fastOutSlowIn,
+                        );
+                      },
                       textCapitalization: TextCapitalization.none,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       formKey: keySenha,

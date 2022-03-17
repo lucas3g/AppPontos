@@ -50,7 +50,7 @@ class _ItensPromocoesWidgetState extends State<ItensPromocoesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: context.screenWidth,
+      width: context.screenWidth >= 392 ? null : context.screenWidth,
       margin: EdgeInsets.all(8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(

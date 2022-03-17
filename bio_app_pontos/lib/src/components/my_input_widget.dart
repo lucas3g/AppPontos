@@ -18,23 +18,26 @@ class MyInputWidget extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final AutovalidateMode? autovalidateMode;
   final TextCapitalization textCapitalization;
-  const MyInputWidget(
-      {Key? key,
-      required this.focusNode,
-      this.keyboardType = TextInputType.text,
-      required this.hintText,
-      this.obscureText = false,
-      this.suffixIcon,
-      this.inputFormaters,
-      this.onFieldSubmitted,
-      this.maxLength,
-      this.campoVazio,
-      required this.formKey,
-      required this.textEditingController,
-      required this.onChanged,
-      this.autovalidateMode,
-      this.textCapitalization = TextCapitalization.sentences})
-      : super(key: key);
+  final Function()? onTap;
+
+  const MyInputWidget({
+    Key? key,
+    required this.focusNode,
+    this.keyboardType = TextInputType.text,
+    required this.hintText,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.inputFormaters,
+    this.onFieldSubmitted,
+    this.maxLength,
+    this.campoVazio,
+    required this.formKey,
+    required this.textEditingController,
+    required this.onChanged,
+    this.autovalidateMode,
+    this.textCapitalization = TextCapitalization.sentences,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   State<MyInputWidget> createState() => _MyInputWidgetState();
@@ -49,7 +52,6 @@ class _MyInputWidgetState extends State<MyInputWidget> {
           ? widget.autovalidateMode
           : AutovalidateMode.disabled,
       child: TextFormField(
-        
         textCapitalization: widget.textCapitalization,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -85,6 +87,7 @@ class _MyInputWidgetState extends State<MyInputWidget> {
           widget.onChanged(value);
           setState(() {});
         },
+        onTap: widget.onTap,
         obscureText: widget.obscureText,
         inputFormatters: widget.inputFormaters,
         onFieldSubmitted: widget.onFieldSubmitted,
