@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           controller: scrollController,
           child: SizedBox(
-            height: context.screenHeight * 0.77,
+            height: context.screenHeight * 0.767,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

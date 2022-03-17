@@ -158,9 +158,10 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                           uf: lista[0],
                         );
                         filteredMunicipios = municipios;
+                        controllerCep.text = value!.trim();
                       },
                       onChanged: (String? cep) {
-                        controller.copyWith(cep: cep);
+                        controller.copyWith(cep: cep!.trim());
                       },
                     ),
                   ),
@@ -231,7 +232,11 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                         filteredMunicipios = [];
                         controllerMunicipio.text = '';
                       }
-                      controller.copyWith(uf: value);
+                      controller.copyWith(uf: value.trim());
+                    },
+                    onFieldSubmitted: (value) {
+                      municipio.requestFocus();
+                      controllerEstado.text = value.trim();
                     },
                     controller: controllerEstado,
                     decoration: InputDecoration(
@@ -336,7 +341,11 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                         });
                       }
                       filtraMunicipios(value);
-                      controller.copyWith(municipio: value);
+                      controller.copyWith(municipio: value.trim());
+                    },
+                    onFieldSubmitted: (value) {
+                      rua.requestFocus();
+                      controllerMunicipio.text = value.trim();
                     },
                     controller: controllerMunicipio,
                     decoration: InputDecoration(
@@ -426,9 +435,10 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                 campoVazio: 'Digite sua Rua',
                 onFieldSubmitted: (value) {
                   numero.requestFocus();
+                  controllerRua.text = value!.trim();
                 },
                 onChanged: (String? rua) {
-                  controller.copyWith(rua: rua);
+                  controller.copyWith(rua: rua!.trim());
                 },
               ),
               SizedBox(height: 10),
@@ -441,9 +451,10 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                 campoVazio: 'Digite seu Número',
                 onFieldSubmitted: (value) {
                   bairro.requestFocus();
+                  controllerNumero.text = value!.trim();
                 },
                 onChanged: (String? numero) {
-                  controller.copyWith(numero: numero);
+                  controller.copyWith(numero: numero!.trim());
                 },
               ),
               SizedBox(height: 10),
@@ -455,9 +466,10 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                 campoVazio: 'Digite seu bairro',
                 onFieldSubmitted: (value) {
                   complemento.requestFocus();
+                  controllerBairro.text = value!.trim();
                 },
                 onChanged: (String? bairro) {
-                  controller.copyWith(bairro: bairro);
+                  controller.copyWith(bairro: bairro!.trim());
                 },
               ),
               SizedBox(height: 10),
@@ -469,9 +481,10 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                 campoVazio: 'Digite seu Complemento',
                 onFieldSubmitted: (value) {
                   FocusScope.of(context).requestFocus(FocusNode());
+                  controllerComplemento.text = value!.trim();
                 },
                 onChanged: (String? complemento) {
-                  controller.copyWith(complemento: complemento);
+                  controller.copyWith(complemento: complemento!.trim());
                 },
               ),
             ],

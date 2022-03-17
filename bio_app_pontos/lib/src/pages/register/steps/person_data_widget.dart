@@ -60,9 +60,10 @@ class _PersonDataWidgetState extends State<PersonDataWidget> {
             campoVazio: 'Digite seu Nome Completo',
             onFieldSubmitted: (value) {
               cpf.requestFocus();
+              controllerNome.text = value!.trim();
             },
             onChanged: (String? nome) {
-              controller.copyWith(nome: nome);
+              controller.copyWith(nome: nome!.trim());
             },
           ),
           SizedBox(height: 10),
@@ -80,9 +81,10 @@ class _PersonDataWidgetState extends State<PersonDataWidget> {
             hintText: 'CPF',
             onFieldSubmitted: (value) {
               celular.requestFocus();
+              controllerCpf.text = value!.trim();
             },
             onChanged: (String? cpf) {
-              controller.copyWith(cpf: cpf);
+              controller.copyWith(cpf: cpf!.trim());
             },
           ),
           SizedBox(height: 10),
@@ -100,9 +102,10 @@ class _PersonDataWidgetState extends State<PersonDataWidget> {
             hintText: 'Celular',
             onFieldSubmitted: (value) {
               placa.requestFocus();
+              controllerCelular.text = value!.trim();
             },
             onChanged: (String? celular) {
-              controller.copyWith(celular: celular);
+              controller.copyWith(celular: celular!.trim());
             },
           ),
           SizedBox(height: 10),
@@ -117,9 +120,10 @@ class _PersonDataWidgetState extends State<PersonDataWidget> {
             maxLength: 7,
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(FocusNode());
+              controllerPlaca.text = value!.trim();
             },
             onChanged: (String? placa) {
-              controller.copyWith(placa: placa);
+              controller.copyWith(placa: placa!.trim());
             },
           ),
         ],

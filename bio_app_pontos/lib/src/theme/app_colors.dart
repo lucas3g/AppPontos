@@ -8,6 +8,7 @@ abstract class AppColors {
   Color get titleImages;
   Color get titleContainers;
   Color get titlePontos;
+  Color get logadoComSucesso;
   MaterialColor get primary;
 
   final String hex = '0xff';
@@ -33,6 +34,9 @@ class AppColorDefault implements AppColors {
 
   @override
   Color get titlePontos => Color(0xffcf1f36);
+
+  @override
+  Color get logadoComSucesso => Color(0xff009342);
 
   Map<int, Color> color = {
     50: Color.fromRGBO(136, 14, 79, .1),

@@ -45,7 +45,7 @@ class _ButtonLoginWidgetState extends State<ButtonLoginWidget> {
           duration: Duration(milliseconds: 500),
           decoration: BoxDecoration(
               color: widget.controller.status == LoginStatus.success
-                  ? Colors.green
+                  ? AppTheme.colors.logadoComSucesso
                   : AppTheme.colors.primary,
               borderRadius: BorderRadius.circular(
                   widget.controller.status == LoginStatus.empty ||
@@ -58,7 +58,7 @@ class _ButtonLoginWidgetState extends State<ButtonLoginWidget> {
                 BoxShadow(
                   blurRadius: 5,
                   color: widget.controller.status == LoginStatus.success
-                      ? Colors.green
+                      ? AppTheme.colors.logadoComSucesso
                       : AppTheme.colors.primary,
                   offset: Offset(0, 5),
                 )

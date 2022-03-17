@@ -52,9 +52,10 @@ class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
           campoVazio: 'Digite seu E-Mail',
           onFieldSubmitted: (value) {
             password.requestFocus();
+            controllerEmail.text = value!.trim();
           },
           onChanged: (String? email) {
-            widget.controller.copyWith(email: email);
+            widget.controller.copyWith(email: email!.trim());
           },
         ),
         SizedBox(height: 10),
