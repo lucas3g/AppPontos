@@ -1,7 +1,7 @@
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
 import 'package:bio_app_pontos/src/models/user_model.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/config/config_page.dart';
-//import 'package:bio_app_pontos/src/pages/dashboard/localization/localization_widget.dart';
+import 'package:bio_app_pontos/src/pages/dashboard/localization/localization_widget.dart';
 import 'package:bio_app_pontos/src/pages/dashboard/pontos/pontos_widget.dart';
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
@@ -102,7 +102,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
               children: [
                 PontosWidget(),
                 //HistorioWidget(),
-                //LocalizationWidget(),
+                LocalizationWidget(),
                 ConfigPage(),
               ],
             ),
@@ -151,10 +151,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
           //   Icons.list,
           //   color: Colors.white,
           // ),
-          // Icon(
-          //   Icons.location_on,
-          //   color: Colors.white,
-          // ),
+          Icon(
+            Icons.location_on,
+            color: Colors.white,
+          ),
           Icon(
             Icons.settings_rounded,
             color: Colors.white,
