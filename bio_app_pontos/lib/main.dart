@@ -9,9 +9,9 @@ import 'package:bio_app_pontos/src/controllers/login/login_controller.dart';
 import 'package:bio_app_pontos/src/controllers/maps/maps_controller.dart';
 import 'package:bio_app_pontos/src/controllers/pontos_promocoes/pontos_promocoes_controller.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_controller.dart';
-import 'package:bio_app_pontos/src/firebase_messaging/custom_firebase_messaging.dart';
-import 'package:bio_app_pontos/src/services/check_internet_service.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:bio_app_pontos/src/firebase_messaging/custom_firebase_messaging.dart';
+// import 'package:bio_app_pontos/src/services/check_internet_service.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -23,13 +23,13 @@ Future<void> main() async {
       WidgetsFlutterBinding.ensureInitialized();
       initializeDateFormatting();
 
-      final checkInternetService = CheckInternetService();
+      // final checkInternetService = CheckInternetService();
 
-      if (await checkInternetService.haveInternet()) {
-        await Firebase.initializeApp();
+      // if (await checkInternetService.haveInternet()) {
+      //   await Firebase.initializeApp();
 
-        await CustomFirebaseMessaging().inicialize();
-      }
+      //   await CustomFirebaseMessaging().inicialize();
+      // }
 
       GetIt getIt = GetIt.I;
       getIt.registerSingleton<AppSettings>(AppSettings());
