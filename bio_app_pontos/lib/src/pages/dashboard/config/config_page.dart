@@ -62,7 +62,7 @@ class _ConfigPageState extends State<ConfigPage> {
               height: 50,
               sliderButtonIconPadding: 10,
               outerColor: Colors.white,
-              elevation: 5,
+              elevation: 0,
               innerColor: AppTheme.colors.primary,
               sliderButtonIcon: Icon(
                 Icons.arrow_forward_rounded,
