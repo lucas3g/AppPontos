@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bio_app_pontos/src/components/button_login_widget.dart';
 import 'package:bio_app_pontos/src/components/my_input_widget.dart';
 import 'package:bio_app_pontos/src/configs/global_settings.dart';
@@ -28,6 +30,26 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> keySenha = GlobalKey<FormState>();
   GlobalKey<FormState> keyCPF = GlobalKey<FormState>();
 
+  double retornaAltura() {
+    late double altura;
+
+    if (Constants.nomeApp == 'Bio Wahl - Cashback' && Platform.isIOS) {
+      altura = 35;
+    } else if (Constants.nomeApp == 'Bio Wahl - Cashback' &&
+        Platform.isAndroid) {
+      altura = 30;
+    }
+
+    if (Constants.nomeApp != 'Bio Wahl - Cashback' && Platform.isIOS) {
+      altura = 55;
+    } else if (Constants.nomeApp != 'Bio Wahl - Cashback' &&
+        Platform.isAndroid) {
+      altura = 50;
+    }
+
+    return altura;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,10 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.white,
         flexibleSpace: Container(
           padding: EdgeInsets.only(
-              top: Constants.nomeApp == 'Bio Wahl - Cashback' ? 30 : 50,
-              bottom: 30,
-              left: 30,
-              right: 30),
+              top: retornaAltura(), bottom: 30, left: 30, right: 30),
           child: Image.asset(
             context.image_path,
           ),
@@ -52,7 +71,9 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           controller: scrollController,
           child: SizedBox(
-            height: context.screenHeight * 0.767,
+            height: Platform.isAndroid
+                ? context.screenHeight * 0.767
+                : context.screenHeight * 0.75,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -76,9 +97,10 @@ class _LoginPageState extends State<LoginPage> {
                       campoVazio: 'Digite seu CPF',
                       onFieldSubmitted: (value) {
                         password.requestFocus();
+                        cpfController.text = value!.trim();
                       },
                       onChanged: (String? cpf) {
-                        controller.cpf = cpf!;
+                        controller.cpf = cpf!.trim();
                       },
                       inputFormaters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -122,11 +144,12 @@ class _LoginPageState extends State<LoginPage> {
                             !keySenha.currentState!.validate()) {
                           return;
                         }
+                        senhaController.text = value!.trim();
                         FocusScope.of(context).requestFocus(FocusNode());
                         await controller.acessarApp(context: context);
                       },
                       onChanged: (String? password) {
-                        controller.password = password!;
+                        controller.password = password!.trim();
                       },
                     ),
                     SizedBox(height: 15),

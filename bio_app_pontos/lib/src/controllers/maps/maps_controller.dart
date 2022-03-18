@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bio_app_pontos/src/controllers/maps/maps_status.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_launcher/map_launcher.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
 part 'maps_controller.g.dart';
@@ -39,11 +42,15 @@ abstract class _MapsControllerBase with Store {
 
   @action
   Future<void> navigateTo(double lat, double lng) async {
-    var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
+    final availableMaps = await MapLauncher.installedMaps;
+
+    if (availableMaps.isNotEmpty) {
+      await availableMaps.first.showMarker(
+        coords: Coords(lat, lng),
+        title: Constants.tituloMarker,
+      );
     } else {
-      throw 'Não pode ser aberto ${uri.toString()}';
+      throw 'Nenhum mapa encontrado';
     }
   }
 
