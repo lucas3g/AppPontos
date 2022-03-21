@@ -56,9 +56,8 @@ class _LocalizationWidgetState extends State<LocalizationWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FloatingActionButton.extended(
-              onPressed: () {
-                mapsController.navigateTo(
-                    Constants.latitude, Constants.longitude);
+              onPressed: () async {
+                await mapsController.navigateTo(context: context);
               },
               label: Text('Para o posto!'),
               icon: Icon(Icons.local_gas_station_rounded),

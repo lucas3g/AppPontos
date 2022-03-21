@@ -1,4 +1,5 @@
 import 'package:bio_app_pontos/src/models/user_model.dart';
+import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:bio_app_pontos/src/utils/limpa_dados.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +8,7 @@ class AppSettings extends ChangeNotifier {
   late SharedPreferences _prefs;
 
   Map<String, String> logado = {'conectado': 'N'};
+  late String? ultimaSinc;
   UserModel user = UserModel();
 
   AppSettings() {
@@ -16,6 +18,7 @@ class AppSettings extends ChangeNotifier {
   _startSettings() async {
     await _startPreferences();
     await _readLogado();
+    await setUltimaSincronizacao();
     if (_prefs.getString('conectado') == 'S') await _readUser();
   }
 
@@ -49,6 +52,20 @@ class AppSettings extends ChangeNotifier {
     await _prefs.setString('user', user.toJson());
 
     await _readUser();
+
+    notifyListeners();
+  }
+
+  setUltimaSincronizacao() async {
+    await _prefs.setString('sinc', DateTime.now().DiaMesAnoHora());
+
+    readUltimaSincronizacao();
+
+    notifyListeners();
+  }
+
+  readUltimaSincronizacao() {
+    ultimaSinc = _prefs.getString('sinc')!;
 
     notifyListeners();
   }

@@ -28,7 +28,7 @@ Future<void> main() async {
       if (await checkInternetService.haveInternet()) {
         await Firebase.initializeApp();
 
-        await CustomFirebaseMessaging().inicialize();
+        CustomFirebaseMessaging().inicialize();
       }
 
       GetIt getIt = GetIt.I;

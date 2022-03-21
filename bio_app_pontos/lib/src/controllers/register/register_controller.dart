@@ -29,6 +29,9 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
   RegisterStatusCep statusCep = RegisterStatusCep.empty;
 
   @observable
+  late bool aceitouTermos = false;
+
+  @observable
   GlobalKey<FormState> keyNome = GlobalKey<FormState>();
   @observable
   GlobalKey<FormState> keyCpf = GlobalKey<FormState>();
@@ -77,6 +80,17 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
   @action
   Future<bool> registerUser({required BuildContext context}) async {
     try {
+      if (!aceitouTermos) {
+        MeuToast.toast(
+          title: 'Atenção',
+          message: 'Para continuar você deve aceitar os termos de uso',
+          type: TypeToast.dadosInv,
+          context: context,
+        );
+
+        return false;
+      }
+
       status = RegisterStatus.loading;
       await Future.delayed(Duration(seconds: 1));
 

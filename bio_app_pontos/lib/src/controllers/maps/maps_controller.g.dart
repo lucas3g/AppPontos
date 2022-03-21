@@ -64,8 +64,9 @@ mixin _$MapsController on _MapsControllerBase, Store {
   final _$navigateToAsyncAction = AsyncAction('_MapsControllerBase.navigateTo');
 
   @override
-  Future<void> navigateTo(double lat, double lng) {
-    return _$navigateToAsyncAction.run(() => super.navigateTo(lat, lng));
+  Future<void> navigateTo({required BuildContext context}) {
+    return _$navigateToAsyncAction
+        .run(() => super.navigateTo(context: context));
   }
 
   final _$goToTheLakeAsyncAction =

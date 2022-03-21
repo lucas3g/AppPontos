@@ -41,6 +41,7 @@ abstract class _PontosPromocoesControllerBase extends CheckInternetCPF
         await Future.delayed(Duration(milliseconds: 600));
         if (response.statusCode == 200) {
           saldo.saldo = jsonDecode(response.body)['saldo'];
+          await GlobalSettings().appSetting.setUltimaSincronizacao();
         }
 
         await buscaOfertas();

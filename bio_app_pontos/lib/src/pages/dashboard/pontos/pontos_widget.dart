@@ -61,13 +61,27 @@ class _PontosWidgetState extends State<PontosWidget> {
                                       PontosPromocoesStatus.success ||
                                   controller.status ==
                                       PontosPromocoesStatus.error
-                              ? AnimatedCountText(
-                                  begin: 0,
-                                  end: controller.saldo.saldo!,
-                                  style: AppTheme.textStyles.titlePontos,
-                                  duration: Duration(milliseconds: 600),
-                                  curve: Curves.decelerate,
-                                  precision: 2,
+                              ? Column(
+                                  children: [
+                                    AnimatedCountText(
+                                      begin: 0,
+                                      end: controller.saldo.saldo!,
+                                      style: AppTheme.textStyles.titlePontos,
+                                      duration: Duration(milliseconds: 600),
+                                      curve: Curves.decelerate,
+                                      precision: 2,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Última Sinc: ${GlobalSettings().appSetting.ultimaSinc}',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 )
                               : LoadingWidget(size: Size(200, 50), radius: 10);
                         }),

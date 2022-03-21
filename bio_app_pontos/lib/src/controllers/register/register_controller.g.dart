@@ -54,6 +54,22 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
     });
   }
 
+  final _$aceitouTermosAtom =
+      Atom(name: '_RegisterControllerBase.aceitouTermos');
+
+  @override
+  bool get aceitouTermos {
+    _$aceitouTermosAtom.reportRead();
+    return super.aceitouTermos;
+  }
+
+  @override
+  set aceitouTermos(bool value) {
+    _$aceitouTermosAtom.reportWrite(value, super.aceitouTermos, () {
+      super.aceitouTermos = value;
+    });
+  }
+
   final _$keyNomeAtom = Atom(name: '_RegisterControllerBase.keyNome');
 
   @override
@@ -225,6 +241,7 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
 user: ${user},
 status: ${status},
 statusCep: ${statusCep},
+aceitouTermos: ${aceitouTermos},
 keyNome: ${keyNome},
 keyCpf: ${keyCpf},
 keyCelular: ${keyCelular},

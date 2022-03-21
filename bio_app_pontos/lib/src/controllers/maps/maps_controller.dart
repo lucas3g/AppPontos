@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bio_app_pontos/src/controllers/maps/maps_status.dart';
 import 'package:bio_app_pontos/src/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobx/mobx.dart';
-import 'package:url_launcher/url_launcher.dart';
 part 'maps_controller.g.dart';
 
 class MapsController = _MapsControllerBase with _$MapsController;
@@ -40,18 +39,53 @@ abstract class _MapsControllerBase with Store {
     status = MapsStatus.success;
   }
 
-  @action
-  Future<void> navigateTo(double lat, double lng) async {
-    final availableMaps = await MapLauncher.installedMaps;
+  openMapsSheet(context) async {
+    try {
+      final coords = Coords(Constants.latitude, Constants.longitude);
+      final title = Constants.tituloMarker;
+      final availableMaps = await MapLauncher.installedMaps;
 
-    if (availableMaps.isNotEmpty) {
-      await availableMaps.first.showMarker(
-        coords: Coords(lat, lng),
-        title: Constants.tituloMarker,
+      await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                child: Wrap(
+                  children: <Widget>[
+                    for (var map in availableMaps)
+                      Column(
+                        children: [
+                          ListTile(
+                            onTap: () => map.showMarker(
+                              coords: coords,
+                              title: title,
+                            ),
+                            title: Text(map.mapName),
+                            leading: SvgPicture.asset(
+                              map.icon,
+                              height: 30.0,
+                              width: 30.0,
+                            ),
+                          ),
+                          Divider()
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       );
-    } else {
+    } catch (e) {
       throw 'Nenhum mapa encontrado';
     }
+  }
+
+  @action
+  Future<void> navigateTo({required BuildContext context}) async {
+    openMapsSheet(context);
   }
 
   @action
