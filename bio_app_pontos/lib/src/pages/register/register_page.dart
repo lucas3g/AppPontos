@@ -192,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: TextButton(
                   onPressed: controller.status != RegisterStatus.loading
                       ? () async {
-                          if (currentPage < 2) {
+                          if (currentPage == 0) {
                             if (controller.keyNome.currentState != null) {
                               if (!controller.keyNome.currentState!
                                       .validate() ||
@@ -206,7 +206,24 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                             FocusScope.of(context).requestFocus(FocusNode());
                             await nextPage();
-                          } else {
+                          } else if (currentPage == 1) {
+                            if (controller.keyCep.currentState != null) {
+                              if (!controller.keyCep.currentState!.validate() ||
+                                  !controller.keyEstado.currentState!
+                                      .validate() ||
+                                  !controller.keyMunicipio.currentState!
+                                      .validate() ||
+                                  !controller.keyRua.currentState!.validate() ||
+                                  !controller.keyNumero.currentState!
+                                      .validate() ||
+                                  !controller.keyBairro.currentState!
+                                      .validate()) {
+                                return;
+                              }
+                            }
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            await nextPage();
+                          } else if (currentPage == 2) {
                             if (controller.keyEmail.currentState != null) {
                               if (!controller.keyEmail.currentState!
                                       .validate() ||

@@ -43,6 +43,20 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
   GlobalKey<FormState> keyEmail = GlobalKey<FormState>();
   @observable
   GlobalKey<FormState> keySenha = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyCep = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyEstado = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyMunicipio = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyRua = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyBairro = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyNumero = GlobalKey<FormState>();
+  @observable
+  GlobalKey<FormState> keyComplemento = GlobalKey<FormState>();
 
   @action
   void copyWith({

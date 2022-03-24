@@ -66,13 +66,6 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
   final TextEditingController controllerNumero = TextEditingController();
   final TextEditingController controllerBairro = TextEditingController();
   final TextEditingController controllerComplemento = TextEditingController();
-  final GlobalKey<FormState> keyCep = GlobalKey<FormState>();
-  final GlobalKey<FormState> keyEstado = GlobalKey<FormState>();
-  final GlobalKey<FormState> keyMunicipio = GlobalKey<FormState>();
-  final GlobalKey<FormState> keyRua = GlobalKey<FormState>();
-  final GlobalKey<FormState> keyBairro = GlobalKey<FormState>();
-  final GlobalKey<FormState> keyNumero = GlobalKey<FormState>();
-  final GlobalKey<FormState> keyComplemento = GlobalKey<FormState>();
 
   late bool onTappedEstado = false;
   late bool onTappedMun = false;
@@ -131,8 +124,9 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
                 children: [
                   Expanded(
                     child: MyInputWidget(
+                      autovalidateMode: AutovalidateMode.always,
                       keyboardType: TextInputType.number,
-                      formKey: keyCep,
+                      formKey: controller.keyCep,
                       textEditingController: controllerCep,
                       inputFormaters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -214,52 +208,62 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               SizedBox(height: 10),
               Column(
                 children: [
-                  TextFormField(
-                    focusNode: estado,
-                    onTap: () {
-                      setState(() {
-                        onTappedEstado = !onTappedEstado;
-                      });
-                    },
-                    onChanged: (value) {
-                      if (!onTappedEstado) {
+                  Form(
+                    key: controller.keyEstado,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Digite um estado';
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      focusNode: estado,
+                      onTap: () {
                         setState(() {
-                          onTappedEstado = true;
+                          onTappedEstado = !onTappedEstado;
                         });
-                      }
-                      filtraEstados(value);
-                      if (value.isEmpty) {
-                        filteredMunicipios = [];
-                        controllerMunicipio.text = '';
-                      }
-                      controller.copyWith(uf: value.trim());
-                    },
-                    onFieldSubmitted: (value) {
-                      municipio.requestFocus();
-                      controllerEstado.text = value.trim();
-                    },
-                    controller: controllerEstado,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: controllerEstado.text.isNotEmpty
-                              ? AppTheme.colors.primary
-                              : Colors.grey.shade700,
+                      },
+                      onChanged: (value) {
+                        if (!onTappedEstado) {
+                          setState(() {
+                            onTappedEstado = true;
+                          });
+                        }
+                        filtraEstados(value);
+                        if (value.isEmpty) {
+                          filteredMunicipios = [];
+                          controllerMunicipio.text = '';
+                        }
+                        controller.copyWith(uf: value.trim());
+                      },
+                      onFieldSubmitted: (value) {
+                        municipio.requestFocus();
+                        controllerEstado.text = value.trim();
+                      },
+                      controller: controllerEstado,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: controllerEstado.text.isNotEmpty
+                                ? AppTheme.colors.primary
+                                : Colors.grey.shade700,
+                          ),
                         ),
-                      ),
-                      filled: true,
-                      isDense: true,
-                      fillColor: Colors.transparent,
-                      suffixIcon: AnimatedRotation(
-                        turns: onTappedEstado ? 0.5 : 0,
-                        duration: Duration(milliseconds: 300),
-                        child: Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          size: 30,
+                        filled: true,
+                        isDense: true,
+                        fillColor: Colors.transparent,
+                        suffixIcon: AnimatedRotation(
+                          turns: onTappedEstado ? 0.5 : 0,
+                          duration: Duration(milliseconds: 300),
+                          child: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            size: 30,
+                          ),
                         ),
+                        labelText: "Estado",
                       ),
-                      labelText: "Estado",
                     ),
                   ),
                   AnimatedAlign(
@@ -327,48 +331,58 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               SizedBox(height: 10),
               Column(
                 children: [
-                  TextFormField(
-                    focusNode: municipio,
-                    onTap: () {
-                      setState(() {
-                        onTappedMun = !onTappedMun;
-                      });
-                    },
-                    onChanged: (value) {
-                      if (!onTappedMun) {
+                  Form(
+                    key: controller.keyMunicipio,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Digite um município';
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      focusNode: municipio,
+                      onTap: () {
                         setState(() {
-                          onTappedMun = true;
+                          onTappedMun = !onTappedMun;
                         });
-                      }
-                      filtraMunicipios(value);
-                      controller.copyWith(municipio: value.trim());
-                    },
-                    onFieldSubmitted: (value) {
-                      rua.requestFocus();
-                      controllerMunicipio.text = value.trim();
-                    },
-                    controller: controllerMunicipio,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: controllerMunicipio.text.isNotEmpty
-                              ? AppTheme.colors.primary
-                              : Colors.grey.shade700,
+                      },
+                      onChanged: (value) {
+                        if (!onTappedMun) {
+                          setState(() {
+                            onTappedMun = true;
+                          });
+                        }
+                        filtraMunicipios(value);
+                        controller.copyWith(municipio: value.trim());
+                      },
+                      onFieldSubmitted: (value) {
+                        rua.requestFocus();
+                        controllerMunicipio.text = value.trim();
+                      },
+                      controller: controllerMunicipio,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: controllerMunicipio.text.isNotEmpty
+                                ? AppTheme.colors.primary
+                                : Colors.grey.shade700,
+                          ),
                         ),
-                      ),
-                      filled: true,
-                      isDense: true,
-                      fillColor: Colors.transparent,
-                      suffixIcon: AnimatedRotation(
-                        turns: onTappedMun ? 0.5 : 0,
-                        duration: Duration(milliseconds: 300),
-                        child: Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          size: 30,
+                        filled: true,
+                        isDense: true,
+                        fillColor: Colors.transparent,
+                        suffixIcon: AnimatedRotation(
+                          turns: onTappedMun ? 0.5 : 0,
+                          duration: Duration(milliseconds: 300),
+                          child: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            size: 30,
+                          ),
                         ),
+                        labelText: "Município",
                       ),
-                      labelText: "Município",
                     ),
                   ),
                   AnimatedAlign(
@@ -428,7 +442,8 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               ),
               SizedBox(height: 10),
               MyInputWidget(
-                formKey: keyRua,
+                autovalidateMode: AutovalidateMode.always,
+                formKey: controller.keyRua,
                 textEditingController: controllerRua,
                 focusNode: rua,
                 hintText: 'Rua',
@@ -443,7 +458,8 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               ),
               SizedBox(height: 10),
               MyInputWidget(
-                formKey: keyNumero,
+                autovalidateMode: AutovalidateMode.always,
+                formKey: controller.keyNumero,
                 textEditingController: controllerNumero,
                 inputFormaters: [UpperCaseTextFormatter()],
                 focusNode: numero,
@@ -459,7 +475,8 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               ),
               SizedBox(height: 10),
               MyInputWidget(
-                formKey: keyBairro,
+                autovalidateMode: AutovalidateMode.always,
+                formKey: controller.keyBairro,
                 textEditingController: controllerBairro,
                 focusNode: bairro,
                 hintText: 'Bairro',
@@ -474,7 +491,7 @@ class _PersonAddressWidgetState extends State<PersonAddressWidget> {
               ),
               SizedBox(height: 10),
               MyInputWidget(
-                formKey: keyComplemento,
+                formKey: controller.keyComplemento,
                 textEditingController: controllerComplemento,
                 focusNode: complemento,
                 hintText: 'Complemento',
