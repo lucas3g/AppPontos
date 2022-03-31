@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:bio_app_pontos/src/components/my_input_widget.dart';
 import 'package:bio_app_pontos/src/controllers/register/register_controller.dart';
+import 'package:bio_app_pontos/src/utils/constants.dart';
 import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -47,86 +50,97 @@ class _PersonDataWidgetState extends State<PersonDataWidget> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          MyInputWidget(
-            textCapitalization: TextCapitalization.words,
-            autovalidateMode: AutovalidateMode.always,
-            formKey: controller.keyNome,
-            textEditingController: controllerNome,
-            focusNode: nome,
-            hintText: 'Nome Completo',
-            campoVazio: 'Digite seu Nome Completo',
-            onFieldSubmitted: (value) {
-              cpf.requestFocus();
-              controllerNome.text = value!.trim();
-            },
-            onChanged: (String? nome) {
-              controller.copyWith(nome: nome!.trim());
-            },
+      return Center(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: Platform.isAndroid
+                ? context.screenHeight * 0.767
+                : context.screenHeight * 0.75,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyInputWidget(
+                  textCapitalization: TextCapitalization.words,
+                  autovalidateMode: AutovalidateMode.always,
+                  formKey: controller.keyNome,
+                  textEditingController: controllerNome,
+                  focusNode: nome,
+                  hintText: 'Nome Completo',
+                  campoVazio: 'Digite seu Nome Completo',
+                  onFieldSubmitted: (value) {
+                    cpf.requestFocus();
+                    controllerNome.text = value!.trim().removeAcentos();
+                    ;
+                  },
+                  onChanged: (String? nome) {
+                    controller.copyWith(nome: nome!.trim().removeAcentos());
+                  },
+                ),
+                SizedBox(height: 10),
+                MyInputWidget(
+                  autovalidateMode: AutovalidateMode.always,
+                  formKey: controller.keyCpf,
+                  textEditingController: controllerCpf,
+                  inputFormaters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CpfInputFormatter(),
+                  ],
+                  focusNode: cpf,
+                  campoVazio: 'Digite seu CPF',
+                  keyboardType: TextInputType.number,
+                  hintText: 'CPF',
+                  onFieldSubmitted: (value) {
+                    celular.requestFocus();
+                    controllerCpf.text = value!.trim();
+                  },
+                  onChanged: (String? cpf) {
+                    controller.copyWith(cpf: cpf!.trim());
+                  },
+                ),
+                SizedBox(height: 10),
+                MyInputWidget(
+                  autovalidateMode: AutovalidateMode.always,
+                  formKey: controller.keyCelular,
+                  textEditingController: controllerCelular,
+                  inputFormaters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    TelefoneInputFormatter()
+                  ],
+                  focusNode: celular,
+                  campoVazio: 'Digite seu Celular',
+                  keyboardType: TextInputType.number,
+                  hintText: 'Celular',
+                  onFieldSubmitted: (value) {
+                    placa.requestFocus();
+                    controllerCelular.text = value!.trim();
+                  },
+                  onChanged: (String? celular) {
+                    controller.copyWith(celular: celular!.trim());
+                  },
+                ),
+                SizedBox(height: 10),
+                MyInputWidget(
+                  autovalidateMode: AutovalidateMode.always,
+                  formKey: controller.keyPlaca,
+                  textEditingController: controllerPlaca,
+                  inputFormaters: [UpperCaseTextFormatter()],
+                  focusNode: placa,
+                  campoVazio: 'Digite sua Placa',
+                  hintText: 'Placa',
+                  maxLength: 7,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    controllerPlaca.text = value!.trim().removeAcentos();
+                    ;
+                  },
+                  onChanged: (String? placa) {
+                    controller.copyWith(placa: placa!.trim().removeAcentos());
+                  },
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 10),
-          MyInputWidget(
-            autovalidateMode: AutovalidateMode.always,
-            formKey: controller.keyCpf,
-            textEditingController: controllerCpf,
-            inputFormaters: [
-              FilteringTextInputFormatter.digitsOnly,
-              CpfInputFormatter(),
-            ],
-            focusNode: cpf,
-            campoVazio: 'Digite seu CPF',
-            keyboardType: TextInputType.number,
-            hintText: 'CPF',
-            onFieldSubmitted: (value) {
-              celular.requestFocus();
-              controllerCpf.text = value!.trim();
-            },
-            onChanged: (String? cpf) {
-              controller.copyWith(cpf: cpf!.trim());
-            },
-          ),
-          SizedBox(height: 10),
-          MyInputWidget(
-            autovalidateMode: AutovalidateMode.always,
-            formKey: controller.keyCelular,
-            textEditingController: controllerCelular,
-            inputFormaters: [
-              FilteringTextInputFormatter.digitsOnly,
-              TelefoneInputFormatter()
-            ],
-            focusNode: celular,
-            campoVazio: 'Digite seu Celular',
-            keyboardType: TextInputType.number,
-            hintText: 'Celular',
-            onFieldSubmitted: (value) {
-              placa.requestFocus();
-              controllerCelular.text = value!.trim();
-            },
-            onChanged: (String? celular) {
-              controller.copyWith(celular: celular!.trim());
-            },
-          ),
-          SizedBox(height: 10),
-          MyInputWidget(
-            autovalidateMode: AutovalidateMode.always,
-            formKey: controller.keyPlaca,
-            textEditingController: controllerPlaca,
-            inputFormaters: [UpperCaseTextFormatter()],
-            focusNode: placa,
-            campoVazio: 'Digite sua Placa',
-            hintText: 'Placa',
-            maxLength: 7,
-            onFieldSubmitted: (value) {
-              FocusScope.of(context).requestFocus(FocusNode());
-              controllerPlaca.text = value!.trim();
-            },
-            onChanged: (String? placa) {
-              controller.copyWith(placa: placa!.trim());
-            },
-          ),
-        ],
+        ),
       );
     });
   }

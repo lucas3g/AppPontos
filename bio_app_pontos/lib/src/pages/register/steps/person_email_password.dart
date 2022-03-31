@@ -1,6 +1,8 @@
 import 'package:bio_app_pontos/src/theme/app_theme.dart';
+import 'package:bio_app_pontos/src/utils/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../components/my_input_widget.dart';
@@ -476,6 +478,9 @@ class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MyInputWidget(
+          inputFormaters: [
+            FilteringTextInputFormatter.deny(new RegExp(r"\s\b|\b\s"))
+          ],
           textCapitalization: TextCapitalization.none,
           autovalidateMode: AutovalidateMode.always,
           formKey: widget.controller.keyEmail,
@@ -485,10 +490,10 @@ class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
           campoVazio: 'Digite seu E-Mail',
           onFieldSubmitted: (value) {
             password.requestFocus();
-            controllerEmail.text = value!.trim();
+            controllerEmail.text = value!.trim().removeAcentos();
           },
           onChanged: (String? email) {
-            widget.controller.copyWith(email: email!.trim());
+            widget.controller.copyWith(email: email!.trim().removeAcentos());
           },
         ),
         SizedBox(height: 10),
@@ -514,9 +519,10 @@ class _PersonEmailPasswordWidgetState extends State<PersonEmailPasswordWidget> {
           ),
           onFieldSubmitted: (value) {
             FocusScope.of(context).requestFocus(FocusNode());
+            controllerPassword.text = value!.trim().removeAcentos();
           },
           onChanged: (String? senha) {
-            widget.controller.copyWith(senha: senha);
+            widget.controller.copyWith(senha: senha!.trim().removeAcentos());
           },
         ),
         SizedBox(height: 10),

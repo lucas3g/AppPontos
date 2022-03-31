@@ -1,7 +1,8 @@
-import 'package:bio_app_pontos/src/theme/app_theme.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:bio_app_pontos/src/theme/app_theme.dart';
 
 class MyInputWidget extends StatefulWidget {
   final FocusNode focusNode;
@@ -19,6 +20,7 @@ class MyInputWidget extends StatefulWidget {
   final AutovalidateMode? autovalidateMode;
   final TextCapitalization textCapitalization;
   final Function()? onTap;
+  final void Function()? onEditingComplete;
 
   const MyInputWidget({
     Key? key,
@@ -27,16 +29,17 @@ class MyInputWidget extends StatefulWidget {
     required this.hintText,
     this.obscureText = false,
     this.suffixIcon,
+    this.maxLength,
     this.inputFormaters,
     this.onFieldSubmitted,
-    this.maxLength,
+    required this.onChanged,
+    required this.textEditingController,
     this.campoVazio,
     required this.formKey,
-    required this.textEditingController,
-    required this.onChanged,
     this.autovalidateMode,
     this.textCapitalization = TextCapitalization.sentences,
     this.onTap,
+    this.onEditingComplete,
   }) : super(key: key);
 
   @override
@@ -52,6 +55,7 @@ class _MyInputWidgetState extends State<MyInputWidget> {
           ? widget.autovalidateMode
           : AutovalidateMode.disabled,
       child: TextFormField(
+        onEditingComplete: widget.onEditingComplete,
         textCapitalization: widget.textCapitalization,
         validator: (value) {
           if (value == null || value.isEmpty) {
