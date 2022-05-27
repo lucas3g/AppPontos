@@ -17,7 +17,9 @@ class _AppWidgetState extends State<AppWidget> {
     return MaterialApp(
       navigatorKey: Constants.navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: AppTheme.colors.primary),
+      theme: ThemeData(
+        primarySwatch: AppTheme.colors.primary,
+      ),
       title: Constants.nomeApp,
       initialRoute: '/splash',
       routes: {

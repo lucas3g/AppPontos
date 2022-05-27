@@ -136,14 +136,17 @@ class _PontosWidgetState extends State<PontosWidget> {
                                       child: Wrap(
                                         children: [
                                           LoadingWidget(
-                                              size: Size(140, 150), radius: 10),
+                                            size: Size(140, 150),
+                                            radius: 10,
+                                          ),
                                           SizedBox(width: 10),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 10),
                                             child: LoadingWidget(
-                                                size: Size(140, 150),
-                                                radius: 10),
+                                              size: Size(140, 150),
+                                              radius: 10,
+                                            ),
                                           ),
                                           LoadingWidget(
                                               size: Size(140, 150), radius: 10),
@@ -152,8 +155,9 @@ class _PontosWidgetState extends State<PontosWidget> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 10),
                                             child: LoadingWidget(
-                                                size: Size(140, 150),
-                                                radius: 10),
+                                              size: Size(140, 150),
+                                              radius: 10,
+                                            ),
                                           ),
                                         ],
                                       ),
