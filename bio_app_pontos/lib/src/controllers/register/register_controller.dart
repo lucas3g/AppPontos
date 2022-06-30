@@ -399,7 +399,7 @@ abstract class _RegisterControllerBase extends CheckInternetCPF with Store {
             '${Constants.baseUrl}/getJson/${Constants.cnpj}/usuarios/${cpf!.replaceAll('.', '').replaceAll('-', '')}'),
       );
 
-      if (jsonDecode(response.body)['cpf'] == cpf) {
+      if (jsonDecode(response.body)['CPF'] == cpf) {
         status = RegisterStatus.success;
         return true;
       } else {

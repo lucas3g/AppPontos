@@ -49,7 +49,7 @@ abstract class _ForgotPasswordControllerBase extends CheckInternetCPF
           body: emailJson.toJson(),
         );
 
-        switch (jsonDecode(response.body)['status']) {
+        switch (jsonDecode(response.body)['STATUS']) {
           case '200':
             await getEmailAndPassword();
             MeuToast.toast(
@@ -99,7 +99,7 @@ abstract class _ForgotPasswordControllerBase extends CheckInternetCPF
       );
 
       if (response.statusCode == 200 && response.body != '') {
-        final emailResponse = jsonDecode(response.body)['email'];
+        final emailResponse = jsonDecode(response.body)['EMAIL'];
         final index = emailResponse.indexOf('@');
         email = emailResponse.replaceRange(
             (index.toDouble() / 2).round(), index, '*' * 5);

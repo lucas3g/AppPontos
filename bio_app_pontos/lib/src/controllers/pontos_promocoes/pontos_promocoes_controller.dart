@@ -40,7 +40,7 @@ abstract class _PontosPromocoesControllerBase extends CheckInternetCPF
         );
         await Future.delayed(Duration(milliseconds: 600));
         if (response.statusCode == 200) {
-          saldo.saldo = jsonDecode(response.body)['saldo'];
+          saldo.saldo = jsonDecode(response.body)['SALDO'];
           await GlobalSettings().appSetting.setUltimaSincronizacao();
         }
 
@@ -71,11 +71,11 @@ abstract class _PontosPromocoesControllerBase extends CheckInternetCPF
       final promocoesApi =
           jsonDecode(responsePromocoes.body).map<PromocoesModel>((e) {
         return PromocoesModel(
-          descricao: e['descricao'],
+          descricao: e['DESCRICAO'],
           path_image:
               'https://cdn-cosmos.bluesoft.com.br/products/${e['gtin']}',
           quantidade: 0,
-          preco: e['vendaPromocao'],
+          preco: e['VENDA_PROMOCAO'],
         );
       }).toList();
 

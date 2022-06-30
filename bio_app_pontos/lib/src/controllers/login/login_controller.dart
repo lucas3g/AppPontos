@@ -72,19 +72,19 @@ abstract class _LoginControllerBase extends CheckInternetCPF with Store {
         if (response.statusCode == 200) {
           await GlobalSettings().appSetting.setUser(
                 user: UserModel(
-                  nome: jsonDecode(response.body)['nome'],
-                  email: jsonDecode(response.body)['email'],
-                  senha: jsonDecode(response.body)['senha'],
-                  cpf: jsonDecode(response.body)['cpf'],
-                  celular: jsonDecode(response.body)['celular'],
-                  placa: jsonDecode(response.body)['placa'],
-                  uf: jsonDecode(response.body)['uf'],
-                  municipio: jsonDecode(response.body)['municipio'],
-                  rua: jsonDecode(response.body)['rua'],
-                  numero: jsonDecode(response.body)['numero'],
-                  bairro: jsonDecode(response.body)['bairro'],
-                  complemento: jsonDecode(response.body)['complemento'],
-                  cep: jsonDecode(response.body)['cep'],
+                  nome: jsonDecode(response.body)['NOME'],
+                  email: jsonDecode(response.body)['EMAIL'],
+                  senha: jsonDecode(response.body)['SENHA'],
+                  cpf: jsonDecode(response.body)['CPF'],
+                  celular: jsonDecode(response.body)['CELULAR'],
+                  placa: jsonDecode(response.body)['PLACA'],
+                  uf: jsonDecode(response.body)['UF'],
+                  municipio: jsonDecode(response.body)['MUNICIPIO'],
+                  rua: jsonDecode(response.body)['RUA'],
+                  numero: jsonDecode(response.body)['NUMERO'],
+                  bairro: jsonDecode(response.body)['BAIRRO'],
+                  complemento: jsonDecode(response.body)['COMPLEMENTO'],
+                  cep: jsonDecode(response.body)['CEP'],
                 ),
               );
           await GlobalSettings().appSetting.setLogado(conectado: 'S');
